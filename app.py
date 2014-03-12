@@ -96,6 +96,21 @@ def teams():
 
     return jsonify(**resp)
 
+@app.route("/arenas")
+def arenas():
+    comp = g.comp_man.get_comp()
+
+    return jsonify(arenas = comp.arenas)
+
+@app.route("/corner/<int:number>")
+def corner(number):
+    comp = g.comp_man.get_comp()
+
+    if number not in comp.corners:
+        return jsonify(error=True,msg="Invalid corner"), 404
+
+    return jsonify(colour = comp.corners[number].colour)
+
 if __name__ == '__main__':
     from argparse import ArgumentParser
 
