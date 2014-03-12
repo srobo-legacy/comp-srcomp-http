@@ -4,8 +4,6 @@ from flask import g, Flask, jsonify, json
 from srcomp import SRComp
 import time
 
-ROOTDIR = os.path.dirname(__file__)
-
 app = Flask(__name__)
 
 class SRCompManager(object):
