@@ -86,6 +86,16 @@ def current_match_info(arena):
 
     return jsonify(**match_json_info(match))
 
+@app.route("/teams")
+def teams():
+    comp = g.comp_man.get_comp()
+
+    resp = {}
+    for team in comp.teams.values():
+        resp[team.tla] = team.name
+
+    return jsonify(**resp)
+
 if __name__ == '__main__':
     from argparse import ArgumentParser
 
