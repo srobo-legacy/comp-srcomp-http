@@ -1,0 +1,3 @@
+[submodule "srcomp"]
+	path = srcomp
+	url = https://rspanton@bitbucket.org/rspanton/srcomp.git
