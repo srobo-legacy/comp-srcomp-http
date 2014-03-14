@@ -33,14 +33,22 @@ def before_request():
         comp_man.root_dir = app.config["COMPSTATE"]
     g.comp_man = comp_man
 
-def match_json_info(match):
-    return {
+def match_json_info(comp, match):
+    info = {
         "number": match.num,
         "arena": match.arena,
         "teams": match.teams,
         "start_time": match.start_time.isoformat(),
         "end_time": match.end_time.isoformat(),
     }
+
+    league = comp.scores.league
+    k = (match.arena, match.num)
+    if k in league.game_points:
+        info["game_points"] = league.game_points[k]
+        info["league_points"] = league.match_league_points[k]
+
+    return info
 
 @app.route("/matches/<arena>/<int:match_number>")
 def match_info(arena, match_number):
@@ -55,7 +63,7 @@ def match_info(arena, match_number):
         return jsonify(error=True,msg="Invalid arena"), 404
     match = match[arena]
 
-    return jsonify(**match_json_info(match))
+    return jsonify(**match_json_info(comp, match))
 
 @app.route("/matches/<arena>/<int:match_number_min>-<int:match_number_max>")
 def match_info_range(arena, match_number_min, match_number_max):
@@ -68,7 +76,7 @@ def match_info_range(arena, match_number_min, match_number_max):
             "Skip matches that don't exist"
             continue
 
-        resp[match_n] = match_json_info(comp.schedule.matches[match_n][arena])
+        resp[match_n] = match_json_info(comp, comp.schedule.matches[match_n][arena])
 
     return json.dumps(resp)
 
@@ -84,7 +92,7 @@ def current_match_info(arena):
         return jsonify(error=True,msg="Invalid arena"), 404
     match = current[arena]
 
-    return jsonify(**match_json_info(match))
+    return jsonify(**match_json_info(comp, match))
 
 @app.route("/teams")
 def teams():
@@ -95,6 +103,12 @@ def teams():
         resp[team.tla] = team.name
 
     return jsonify(**resp)
+
+@app.route("/scores/league")
+def scores():
+    comp = g.comp_man.get_comp()
+
+    return jsonify(**comp.scores.league.teams)
 
 @app.route("/arenas")
 def arenas():
