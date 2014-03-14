@@ -18,6 +18,8 @@ def setup_module():
         global _process
         _process = run_server()
         line = _process.stdout.readline()
+        retcode = _process.poll()
+        assert retcode is None, _process.stdout.read()
         assert line.startswith(" * Running on"), line
     else:
         PORT = int(open(port_file).read())
