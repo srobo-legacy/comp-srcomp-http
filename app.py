@@ -134,8 +134,10 @@ if __name__ == '__main__':
     parser.add_argument("compstate", help = "Competition state git repository path")
     parser.add_argument("-p", "--port", type=int, default=5112,
                         help = "Port to listen on")
+    parser.add_argument("--no-reloader", action="store_false", default=True,
+                        dest="reloader", help = "Disable the reloader")
     args = parser.parse_args()
 
     app.config["COMPSTATE"] = args.compstate
     app.debug = True
-    app.run(host='0.0.0.0', port=args.port)
+    app.run(host='0.0.0.0', port=args.port, use_reloader=args.reloader)
