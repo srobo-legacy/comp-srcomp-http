@@ -137,4 +137,5 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     app.config["COMPSTATE"] = args.compstate
+    app.debug = True
     app.run(host='0.0.0.0', port=args.port)
