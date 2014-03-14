@@ -45,8 +45,10 @@ def match_json_info(comp, match):
     league = comp.scores.league
     k = (match.arena, match.num)
     if k in league.game_points:
-        info["game_points"] = league.game_points[k]
-        info["league_points"] = league.match_league_points[k]
+        info["scores"] = {
+            "game": league.game_points[k],
+            "league": league.match_league_points[k]
+        }
 
     return info
 
