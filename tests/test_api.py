@@ -20,7 +20,7 @@ def setup_module():
         line = _process.stdout.readline()
         retcode = _process.poll()
         assert retcode is None, _process.stdout.read()
-        assert line.startswith(" * Running on"), line
+        assert line.startswith(" * Running on"), line + '\n' + _process.stdout.read()
     else:
         PORT = int(open(port_file).read())
 
