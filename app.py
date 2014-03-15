@@ -128,7 +128,7 @@ def arenas():
 def knockout_entrants():
     comp = g.comp_man.get_comp()
 
-    return jsonify(arenas = comp.knockout.max_entrants)
+    return jsonify(max_entrants = comp.knockout.max_entrants)
 
 @app.route("/corner/<int:number>")
 def corner(number):
