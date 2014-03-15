@@ -80,14 +80,14 @@ def match_info_range(arena, match_number_min, match_number_max):
 
         resp[match_n] = match_json_info(comp, comp.schedule.matches[match_n][arena])
 
-    return json.dumps(resp)
+    return jsonify(matches = resp)
 
 @app.route("/matches/all")
 def match_info_all():
     "Get information about the given range of matches"
     comp = g.comp_man.get_comp()
 
-    return json.dumps(comp.schedule.matches)
+    return jsonify(matches = comp.schedule.matches)
 
 @app.route("/matches/<arena>/current")
 def current_match_info(arena):
@@ -111,7 +111,7 @@ def teams():
     for team in comp.teams.values():
         resp[team.tla] = team.name
 
-    return jsonify(**resp)
+    return jsonify(teams = resp)
 
 @app.route("/scores/league")
 def scores():
