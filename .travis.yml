@@ -2,5 +2,5 @@ language: python
 python:
   - "2.7"
 before_install: git submodule update --init --recursive
-install: pip install nose PyYAML Flask
+install: pip install nose PyYAML Flask simplejson
 script: ./run-tests -d
