@@ -75,6 +75,7 @@ def test_endpoints():
 
         '/scores/league',
         '/arenas',
+        'knockout/max_entrants',
         '/corner/0',
         '/corner/1',
         '/corner/2',
