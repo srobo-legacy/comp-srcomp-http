@@ -82,6 +82,13 @@ def match_info_range(arena, match_number_min, match_number_max):
 
     return json.dumps(resp)
 
+@app.route("/matches/all")
+def match_info_all():
+    "Get information about the given range of matches"
+    comp = g.comp_man.get_comp()
+
+    return json.dumps(comp.schedule.matches)
+
 @app.route("/matches/<arena>/current")
 def current_match_info(arena):
     comp = g.comp_man.get_comp()
