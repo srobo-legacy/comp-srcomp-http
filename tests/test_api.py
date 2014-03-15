@@ -53,7 +53,7 @@ def server_get(endpoint):
 def assert_json(endpoint, expected):
     resp, raw_data = server_get(endpoint)
     status = resp.status
-    assert expected == status
+    assert expected == status, raw_data
 
     data = json.loads(raw_data)
     assert data is not None
