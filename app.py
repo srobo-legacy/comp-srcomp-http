@@ -85,16 +85,12 @@ def match_info_range(arena, match_number_min, match_number_max):
 @app.route("/matches/<arena>/current")
 def current_match_info(arena):
     comp = g.comp_man.get_comp()
-    current = comp.schedule.current_match()
+    current = comp.schedule.current_match(arena)
 
     if current is None:
         return jsonify(number=None, msg="No current match")
 
-    if arena not in current:
-        return jsonify(error=True,msg="Invalid arena"), 404
-    match = current[arena]
-
-    return jsonify(**match_json_info(comp, match))
+    return jsonify(**match_json_info(comp, current))
 
 @app.route("/teams")
 def teams():
