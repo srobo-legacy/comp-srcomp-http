@@ -110,7 +110,13 @@ def teams():
 def scores():
     comp = g.comp_man.get_comp()
 
-    return jsonify(**comp.scores.league.teams)
+    league = {}
+    game = {}
+    for tla, pts in comp.scores.league.teams.items():
+        league[tla] = pts.league_points
+        game[tla] = pts.game_points
+
+    return jsonify(league_points=league, game_points=game)
 
 @app.route("/arenas")
 def arenas():
