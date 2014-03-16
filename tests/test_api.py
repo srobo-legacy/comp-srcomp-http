@@ -55,7 +55,8 @@ def make_matches_today(root):
     now = datetime.datetime.now()
     first['start_time'] = now - datetime.timedelta(minutes=1)
     end = now + datetime.timedelta(days=1)
-    first['max_end_time'] = first['end_time'] = end
+    first['end_time'] = end
+    del first['max_end_time']
 
     with open(schedule_path, 'w') as f:
         f.write(yaml.dump(s))
