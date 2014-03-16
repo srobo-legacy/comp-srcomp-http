@@ -57,7 +57,7 @@ def match_info(arena, match_number):
     "Get information about the given match number"
     comp = g.comp_man.get_comp()
 
-    if match_number not in comp.schedule.matches:
+    if match_number < 0 or match_number > len(comp.schedule.matches):
         return jsonify(error=True,msg="Invalid match number"), 404
     match = comp.schedule.matches[match_number]
 
@@ -73,11 +73,10 @@ def match_info_range(arena, match_number_min, match_number_max):
     comp = g.comp_man.get_comp()
     resp = {}
 
-    for match_n in range(match_number_min, match_number_max+1):
-        if match_n not in comp.schedule.matches:
-            "Skip matches that don't exist"
-            continue
+    match_number_min = max(match_number_min, 0)
+    match_number_max = min(match_number_max, len(comp.schedule.matches)-1)
 
+    for match_n in range(match_number_min, match_number_max+1):
         resp[match_n] = match_json_info(comp, comp.schedule.matches[match_n][arena])
 
     return jsonify(matches = resp)
