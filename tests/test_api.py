@@ -16,7 +16,9 @@ def setup_module():
     port_file = ROOT + '.test-port'
     if not os.path.exists(port_file):
         global _process
-        _process = run_server()
+        dummy_compstate = ROOT + '/srcomp/tests/dummy/'
+        print "Using '{0}'.".format(dummy_compstate)
+        _process = run_server(dummy_compstate)
         line = _process.stdout.readline()
         retcode = _process.poll()
         assert retcode is None, _process.stdout.read()
@@ -30,9 +32,8 @@ def teardown_module():
         _process.terminate()
         _process.wait()
 
-def run_server():
-    dummy_compstate = ROOT + '/srcomp/tests/dummy/'
-    args = [ROOT + '/app.py', dummy_compstate, '-p', str(PORT), '--no-reloader']
+def run_server(compstate_path):
+    args = [ROOT + '/app.py', compstate_path, '-p', str(PORT), '--no-reloader']
     proc = subprocess.Popen(args,
                             stderr=subprocess.STDOUT,
                             stdout=subprocess.PIPE)
