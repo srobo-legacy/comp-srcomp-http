@@ -1,6 +1,7 @@
 #!/usr/bin/env python
+import datetime
 import os
-from flask import g, Flask, jsonify, json
+from flask import g, Flask, jsonify, json, request
 from srcomp import SRComp
 import time
 
@@ -51,6 +52,57 @@ def match_json_info(comp, match):
         }
 
     return info
+
+def match_parse_name(comp, arena, s):
+    matches = comp.schedule.matches
+
+    try:
+        "First try it as in integer"
+        n = int(s)
+    except ValueError:
+        pass
+    else:
+        return matches[n][arena]
+
+    if s == "current":
+        return comp.schedule.current_match(arena)
+
+    if s == "next":
+        now = datetime.datetime.now()
+        return comp.schedule.match_after(arena, now)
+
+    if s == "next+1":
+        now = datetime.datetime.now()
+        next_m = comp.schedule.match_after(arena, now)
+
+        n = next_m.num + 1
+        if n >= len(matches):
+            "No next+1 match"
+            return None
+
+        return matches[n][arena]
+
+    raise ValueError
+
+@app.route("/matches/<arena>", methods=["GET"])
+def match_query(arena):
+    comp = g.comp_man.get_comp()
+
+    if "numbers" in request.args:
+        result = []
+
+        for desc in request.args["numbers"].split(","):
+            try:
+                m = match_parse_name(comp, arena, desc)
+            except (IndexError, ValueError):
+                return jsonify(error=True,
+                               msg="Unknown match '{0}'".format(desc)), 400
+            info = match_json_info(comp, m)
+            info["query"] = desc
+            result.append(info)
+
+        return jsonify(matches=result)
+    return jsonify(error=True), 400
 
 @app.route("/matches/<arena>/<int:match_number>")
 def match_info(arena, match_number):
