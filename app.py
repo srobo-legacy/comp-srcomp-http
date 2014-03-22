@@ -170,7 +170,8 @@ def scores():
         league[tla] = pts.league_points
         game[tla] = pts.game_points
 
-    return jsonify(league_points=league, game_points=game)
+    return jsonify(league_points=league, game_points=game, \
+                    last_scored=comp.scores.league.last_scored_match)
 
 @app.route("/arenas")
 def arenas():
