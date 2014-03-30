@@ -141,7 +141,7 @@ def match_info_range(arena, match_number_min, match_number_max):
 
 @app.route("/matches/all")
 def match_info_all():
-    "Get information about the given range of matches"
+    "Get information about all the scheduled matches"
     comp = g.comp_man.get_comp()
 
     return jsonify(matches = comp.schedule.matches)
