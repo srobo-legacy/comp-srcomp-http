@@ -34,6 +34,12 @@ def before_request():
         comp_man.root_dir = app.config["COMPSTATE"]
     g.comp_man = comp_man
 
+@app.after_request
+def after_request(resp):
+    if 'Origin' in request.headers:
+        resp.headers['Access-Control-Allow-Origin'] = '*'
+    return resp
+
 def match_json_info(comp, match):
     info = {
         "number": match.num,
