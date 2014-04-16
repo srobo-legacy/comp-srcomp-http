@@ -74,11 +74,11 @@ def match_parse_name(comp, arena, s):
         return comp.schedule.current_match(arena)
 
     if s == "next":
-        now = datetime.datetime.now()
+        now = datetime.datetime.utcnow()
         return comp.schedule.match_after(arena, now)
 
     if s == "next+1":
-        now = datetime.datetime.now()
+        now = datetime.datetime.utcnow()
         next_m = comp.schedule.match_after(arena, now)
 
         n = next_m.num + 1
