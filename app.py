@@ -41,23 +41,29 @@ def after_request(resp):
     return resp
 
 def match_json_info(comp, match):
-    info = {
-        "number": match.num,
-        "arena": match.arena,
-        "teams": match.teams,
-        "start_time": match.start_time.isoformat(),
-        "end_time": match.end_time.isoformat(),
-    }
-
-    league = comp.scores.league
-    k = (match.arena, match.num)
-    if k in league.game_points:
-        info["scores"] = {
-            "game": league.game_points[k],
-            "league": league.match_league_points[k]
+    if match:
+        info = {
+            "number": match.num,
+            "arena": match.arena,
+            "teams": match.teams,
+            "start_time": match.start_time.isoformat(),
+            "end_time": match.end_time.isoformat(),
         }
 
-    return info
+        league = comp.scores.league
+        k = (match.arena, match.num)
+        if k in league.game_points:
+            info["scores"] = {
+                "game": league.game_points[k],
+                "league": league.match_league_points[k]
+            }
+
+        return info
+    else:
+        return {
+            "error": True,
+            "msg": "No match at this time."
+        }
 
 def match_parse_name(comp, arena, s):
     matches = comp.schedule.matches
