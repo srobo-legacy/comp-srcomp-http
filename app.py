@@ -154,7 +154,7 @@ def match_info_all():
 
 @app.route("/matches/periods")
 def match_info_periods():
-    "Get information about all the scheduled matches, organised by paeriod"
+    "Get information about all the scheduled matches, organised by period"
     comp = g.comp_man.get_comp()
 
     return jsonify(periods = comp.schedule.match_periods)
