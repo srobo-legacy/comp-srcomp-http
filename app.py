@@ -169,7 +169,10 @@ def knockout_matches():
     for arena in comp.arenas:
         current = comp.schedule.current_match(arena)
         if current is not None:
+            # knockouts can't start until the league finishes,
+            # so as soon as we see a knockout match we can stop looking
             started = current["type"] == KNOCKOUT_MATCH
+            break
 
     return jsonify(rounds = comp.schedule.knockout_rounds,
                    started = started)
