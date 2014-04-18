@@ -103,6 +103,7 @@ def test_endpoints():
         '/matches/A/current',
         '/matches/B/current',
 
+        '/matches/knockouts',
         '/scores/league',
         '/arenas',
         '/corner/0',

@@ -3,6 +3,7 @@ import datetime
 import os
 from flask import g, Flask, jsonify, json, request
 from srcomp import SRComp
+from srcomp.matches import KNOCKOUT_MATCH
 import time
 
 app = Flask(__name__)
@@ -158,6 +159,20 @@ def match_info_periods():
     comp = g.comp_man.get_comp()
 
     return jsonify(periods = comp.schedule.match_periods)
+
+@app.route("/matches/knockouts")
+def knockout_matches():
+    "Get information about all the knockout matches"
+    comp = g.comp_man.get_comp()
+
+    started = False
+    for arena in comp.arenas:
+        current = comp.schedule.current_match(arena)
+        if current is not None:
+            started = current["type"] == KNOCKOUT_MATCH
+
+    return jsonify(rounds = comp.schedule.knockout_rounds,
+                   started = started)
 
 @app.route("/matches/<arena>/current")
 def current_match_info(arena):
