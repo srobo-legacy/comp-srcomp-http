@@ -79,23 +79,31 @@ def match_parse_name(comp, arena, s):
     else:
         return matches[n][arena]
 
+    def get_next():
+        now = datetime.datetime.now(tzlocal())
+        return comp.schedule.match_after(arena, now)
+
+    def get_bounded(n):
+        if n < 0 or n > len(matches):
+            return None
+        return matches[n][arena]
+
+    if s == "previous":
+        current = comp.schedule.current_match(arena)
+        if current is None:
+            current = get_next()
+
+        return get_bounded(current.num - 1)
+
     if s == "current":
         return comp.schedule.current_match(arena)
 
     if s == "next":
-        now = datetime.datetime.now(tzlocal())
-        return comp.schedule.match_after(arena, now)
+        return get_next()
 
     if s == "next+1":
-        now = datetime.datetime.now(tzlocal())
-        next_m = comp.schedule.match_after(arena, now)
-
-        n = next_m.num + 1
-        if n >= len(matches):
-            "No next+1 match"
-            return None
-
-        return matches[n][arena]
+        next_m = get_next()
+        return get_bounded(next_m.num + 1)
 
     raise ValueError
 
