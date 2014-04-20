@@ -1,10 +1,12 @@
 
 import datetime
+from dateutil.tz import tzlocal
 import httplib
 import json
 import os
 import shutil
 import subprocess
+import sys
 import tempfile
 import time
 import yaml
@@ -12,6 +14,9 @@ import yaml
 PORT = 5555 # deliberately not the default
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+sys.path.insert(0, os.path.join(ROOT, 'srcomp'))
+import yaml_loader
 
 _process = None
 _temp_dir = None
@@ -49,11 +54,9 @@ def create_compstate(original):
 
 def make_matches_today(root):
     schedule_path = os.path.join(root, "schedule.yaml")
-    s = None
-    with open(schedule_path, 'r') as f:
-        s = yaml.load(f)
+    s = yaml_loader.load(schedule_path)
     first = s['match_periods']['league'][0]
-    now = datetime.datetime.now()
+    now = datetime.datetime.now(tzlocal())
     first['start_time'] = now - datetime.timedelta(minutes=1)
     end = now + datetime.timedelta(days=1)
     first['end_time'] = end

@@ -8,6 +8,7 @@ of competition software.
 ## Pre Requisites
 
 * PyYAML
+* dateutil
 * Flask
 * simplejson
 * nose (for testing)
