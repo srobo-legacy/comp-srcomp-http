@@ -91,8 +91,11 @@ def match_parse_name(comp, arena, s):
     if s == "previous":
         current = comp.schedule.current_match(arena)
         if current is None:
+            "between sessions (etc.)"
             current = get_next()
-
+        if current is None:
+            "after the competition"
+            return None
         return get_bounded(current.num - 1)
 
     if s == "current":
@@ -103,6 +106,9 @@ def match_parse_name(comp, arena, s):
 
     if s == "next+1":
         next_m = get_next()
+        if next_m is None:
+            "after the competition"
+            return None
         return get_bounded(next_m.num + 1)
 
     raise ValueError
