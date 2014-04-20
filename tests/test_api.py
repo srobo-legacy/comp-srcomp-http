@@ -44,6 +44,7 @@ def create_compstate(original):
     tmp_compstate = os.path.join(_temp_dir, 'compstate')
     shutil.copytree(original, tmp_compstate)
     make_matches_today(tmp_compstate)
+    fix_gitdir(tmp_compstate, original)
     return tmp_compstate
 
 def make_matches_today(root):
@@ -60,6 +61,26 @@ def make_matches_today(root):
 
     with open(schedule_path, 'w') as f:
         f.write(yaml.dump(s))
+
+def fix_gitdir(target, reference):
+    PREFIX = "gitdir:"
+    target_git = os.path.join(target, '.git')
+
+    if os.path.isdir(target_git):
+        # nothing to do, will have been copied just fine
+        return
+
+    relative_gitdir = None
+    with open(target_git, 'r') as fd:
+        content = fd.read()
+        relative_gitdir = content[len(PREFIX):]
+        relative_gitdir = relative_gitdir.strip()
+
+    gitdir = os.path.join(reference, relative_gitdir)
+    gitdir = os.path.abspath(gitdir)
+
+    with open(target_git, 'w') as fd:
+        print >>fd, PREFIX, gitdir
 
 def run_server(compstate_path):
     args = [ROOT + '/app.py', compstate_path, '-p', str(PORT), '--no-reloader']
@@ -110,6 +131,7 @@ def test_endpoints():
         '/corner/1',
         '/corner/2',
         '/corner/3',
+        '/state',
     ]
 
     for e in endpoints:

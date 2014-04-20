@@ -225,6 +225,11 @@ def corner(number):
 
     return jsonify(colour = comp.corners[number].colour)
 
+@app.route("/state")
+def state_label():
+    comp = g.comp_man.get_comp()
+    return jsonify(state = comp.state)
+
 if __name__ == '__main__':
     from argparse import ArgumentParser
 
