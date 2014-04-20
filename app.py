@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import datetime
+from dateutil.tz import tzlocal
 import os
 from flask import g, Flask, jsonify, json, request
 from srcomp import SRComp
@@ -81,11 +82,11 @@ def match_parse_name(comp, arena, s):
         return comp.schedule.current_match(arena)
 
     if s == "next":
-        now = datetime.datetime.utcnow()
+        now = datetime.datetime.now(tzlocal())
         return comp.schedule.match_after(arena, now)
 
     if s == "next+1":
-        now = datetime.datetime.utcnow()
+        now = datetime.datetime.now(tzlocal())
         next_m = comp.schedule.match_after(arena, now)
 
         n = next_m.num + 1
