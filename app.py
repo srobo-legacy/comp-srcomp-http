@@ -48,6 +48,7 @@ def match_json_info(comp, match):
             "number": match.num,
             "arena": match.arena,
             "teams": match.teams,
+            "type": match.type,
             "start_time": match.start_time.isoformat(),
             "end_time": match.end_time.isoformat(),
         }
@@ -166,17 +167,7 @@ def knockout_matches():
     "Get information about all the knockout matches"
     comp = g.comp_man.get_comp()
 
-    started = False
-    for arena in comp.arenas:
-        current = comp.schedule.current_match(arena)
-        if current is not None:
-            # knockouts can't start until the league finishes,
-            # so as soon as we see a knockout match we can stop looking
-            started = current.type == KNOCKOUT_MATCH
-            break
-
-    return jsonify(rounds = comp.schedule.knockout_rounds,
-                   started = started)
+    return jsonify(rounds = comp.schedule.knockout_rounds)
 
 @app.route("/matches/<arena>/current")
 def current_match_info(arena):
