@@ -3,30 +3,11 @@ import datetime
 from dateutil.tz import tzlocal
 import os
 from flask import g, Flask, jsonify, json, request
-from srcomp import SRComp
+
 from srcomp.matches import KNOCKOUT_MATCH
-import time
+from manager import SRCompManager
 
 app = Flask(__name__)
-
-class SRCompManager(object):
-    def __init__(self):
-        self.root_dir = "./"
-        self.update_time = None
-
-    def _load(self):
-        self.comp = SRComp(self.root_dir)
-        self.update_time = time.time()
-
-    def get_comp(self):
-        if self.update_time is None:
-            self._load()
-
-        elif time.time() - self.update_time > 5:
-            "Data is more than 5 seconds old -- reload"
-            self._load()
-
-        return self.comp
 
 comp_man = SRCompManager()
 
