@@ -85,12 +85,13 @@ def match_parse_name(comp, arena, s):
     if s == "next":
         return get_next()
 
-    if s == "next+1":
+    if s.startswith("next+"):
+        value = int(s[5:])
         next_m = get_next()
         if next_m is None:
             "after the competition"
             return None
-        return get_bounded(next_m.num + 1)
+        return get_bounded(next_m.num + value)
 
     raise ValueError
 
