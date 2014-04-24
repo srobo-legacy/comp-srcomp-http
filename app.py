@@ -204,6 +204,13 @@ def arenas():
 
     return jsonify(arenas = comp.arenas)
 
+
+@app.route("/corners")
+def corners():
+    comp = g.comp_man.get_comp()
+    return jsonify(corners=comp.corners)
+
+
 @app.route("/corner/<int:number>")
 def corner(number):
     comp = g.comp_man.get_comp()
@@ -211,7 +218,7 @@ def corner(number):
     if number not in comp.corners:
         return jsonify(error=True,msg="Invalid corner"), 404
 
-    return jsonify(colour = comp.corners[number].colour)
+    return jsonify(**comp.corners[number].__dict__)  # **Corner doens't work
 
 @app.route("/state")
 def state_label():
