@@ -1,10 +1,8 @@
 #!/usr/bin/env python
 import datetime
 from dateutil.tz import tzlocal
-import os
-from flask import g, Flask, jsonify, json, request
+from flask import g, Flask, jsonify, request
 
-from srcomp.matches import KNOCKOUT_MATCH
 from manager import SRCompManager
 
 app = Flask(__name__)
