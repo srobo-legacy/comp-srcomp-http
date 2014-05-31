@@ -65,7 +65,8 @@ def match_parse_name(comp, arena, s):
     def get_bounded(n):
         if n < 0 or n > len(matches):
             return None
-        return matches[n][arena]
+        match = matches[n]
+        return match.get(arena, None)
 
     if s == "previous":
         current = comp.schedule.current_match(arena)
@@ -103,7 +104,7 @@ def match_query(arena):
         for desc in request.args["numbers"].split(","):
             try:
                 m = match_parse_name(comp, arena, desc)
-            except (IndexError, ValueError):
+            except (IndexError, KeyError, ValueError):
                 return jsonify(error=True,
                                msg="Unknown match '{0}'".format(desc)), 400
             info = match_json_info(comp, m)
