@@ -63,10 +63,12 @@ def match_parse_name(comp, arena, s):
         return comp.schedule.match_after(arena, now)
 
     def get_bounded(n):
-        if n < 0 or n > len(matches):
+        if n < 0:
             return None
-        match = matches[n]
-        return match.get(arena, None)
+        try:
+            return matches[n][arena]
+        except (IndexError, KeyError):
+            return None
 
     if s == "previous":
         current = comp.schedule.current_match(arena)
