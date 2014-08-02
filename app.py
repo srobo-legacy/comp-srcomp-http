@@ -24,7 +24,7 @@ def after_request(resp):
 def match_json_info(comp, match):
     if match:
         info = {
-            "number": match.num,
+            "num": match.num,
             "arena": match.arena,
             "teams": match.teams,
             "type": match.type,
