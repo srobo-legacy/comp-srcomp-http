@@ -21,6 +21,13 @@ instead encouraged to use the [SRComp Dev](https://www.studentrobotics.org/cgit/
 repo instead. That repo includes (and then serves) most of the clients of
 the API, which makes side-by-side development much easier.
 
+### State Caching
+
+Since loading a given state repo takes a non-trivial amount of time,
+this is cached within the Flask application. Updates to the state repo
+are not tracked directly, and must be signalled by running the `./update`
+script provided.
+
 ## Requirements
 
 * PyYAML
