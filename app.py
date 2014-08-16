@@ -154,6 +154,8 @@ def state_label():
 if __name__ == '__main__':
     from argparse import ArgumentParser
 
+    import config
+
     parser = ArgumentParser( description = "SR Competition info API HTTP server" )
     parser.add_argument("compstate", help = "Competition state git repository path")
     parser.add_argument("-p", "--port", type=int, default=5112,
@@ -161,6 +163,8 @@ if __name__ == '__main__':
     parser.add_argument("--no-reloader", action="store_false", default=True,
                         dest="reloader", help = "Disable the reloader")
     args = parser.parse_args()
+
+    config.configure_logging_relative('logging-stdout.ini')
 
     app.config["COMPSTATE"] = args.compstate
     app.debug = True
