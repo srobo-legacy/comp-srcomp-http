@@ -30,9 +30,11 @@ def setup_module():
         print "Using '{0}'.".format(dummy_compstate)
         _process = run_server(dummy_compstate)
         line = _process.stdout.readline()
+        assert line.startswith("logging configured"), line
+        line = _process.stdout.readline()
+        assert line.startswith(" * Running on"), line
         retcode = _process.poll()
-        assert retcode is None, _process.stdout.read()
-        assert line.startswith(" * Running on"), line + '\n' + _process.stdout.read()
+        assert retcode is None, line + '\n' + _process.stdout.read()
     else:
         PORT = int(open(port_file).read())
 
