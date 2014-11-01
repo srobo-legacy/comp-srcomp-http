@@ -3,7 +3,7 @@ import datetime
 import mock
 
 from srcomp.matches import MatchSchedule, Match, LEAGUE_MATCH
-from query_utils import match_parse_name
+from sr.comp.http.query_utils import match_parse_name
 
 def dtime(hour, minute, second = 0):
     return datetime.datetime(2014, 3, 26,  hour, minute, second)
@@ -58,7 +58,7 @@ def helper(expected_match, at_time, input_str):
     dt_dt_mock = mock.Mock(now = now_mock)
     dt_mock = mock.Mock(datetime = dt_dt_mock)
 
-    with mock.patch('query_utils.datetime', dt_mock), \
+    with mock.patch('sr.comp.http.query_utils.datetime', dt_mock), \
             mock.patch('srcomp.matches.datetime', dt_mock):
         match = match_parse_name(schedule, 'A', input_str)
 
