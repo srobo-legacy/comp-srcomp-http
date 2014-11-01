@@ -17,7 +17,7 @@ PORT = 5555 # deliberately not the default
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 sys.path.insert(0, os.path.join(ROOT, 'srcomp'))
-import yaml_loader
+from sr.comp import yaml_loader
 
 _process = None
 _temp_dir = None
