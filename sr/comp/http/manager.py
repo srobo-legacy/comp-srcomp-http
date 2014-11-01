@@ -5,7 +5,7 @@ import logging
 import os
 import time
 
-from srcomp import SRComp
+from sr.comp.comp import SRComp
 
 LOCK_FILE = ".update-lock"
 UPDATE_FILE = ".update-pls"

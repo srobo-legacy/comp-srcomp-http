@@ -89,7 +89,8 @@ def fix_gitdir(target, reference):
         print(PREFIX, gitdir, file=fd)
 
 def run_server(compstate_path):
-    args = [ROOT + '/app.py', compstate_path, '-p', str(PORT), '--no-reloader']
+    args = [sys.executable, '-m', 'sr.comp.http',
+            compstate_path, '-p', str(PORT), '--no-reloader']
     proc = subprocess.Popen(args,
                             stderr=subprocess.STDOUT,
                             stdout=subprocess.PIPE,
