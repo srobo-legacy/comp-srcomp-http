@@ -2,7 +2,7 @@
 import datetime
 import mock
 
-from srcomp.matches import MatchSchedule, Match, LEAGUE_MATCH
+from sr.comp.matches import MatchSchedule, Match, LEAGUE_MATCH
 from sr.comp.http.query_utils import match_parse_name
 
 def dtime(hour, minute, second = 0):
@@ -59,7 +59,7 @@ def helper(expected_match, at_time, input_str):
     dt_mock = mock.Mock(datetime = dt_dt_mock)
 
     with mock.patch('sr.comp.http.query_utils.datetime', dt_mock), \
-            mock.patch('srcomp.matches.datetime', dt_mock):
+            mock.patch('sr.comp.matches.datetime', dt_mock):
         match = match_parse_name(schedule, 'A', input_str)
 
         assert expected_match == match, "Wrong match returned for '{0}'.".format(input_str)
