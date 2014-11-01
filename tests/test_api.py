@@ -86,13 +86,14 @@ def fix_gitdir(target, reference):
     gitdir = os.path.abspath(gitdir)
 
     with open(target_git, 'w') as fd:
-        print >>fd, PREFIX, gitdir
+        print(PREFIX, gitdir, file=fd)
 
 def run_server(compstate_path):
     args = [ROOT + '/app.py', compstate_path, '-p', str(PORT), '--no-reloader']
     proc = subprocess.Popen(args,
                             stderr=subprocess.STDOUT,
-                            stdout=subprocess.PIPE)
+                            stdout=subprocess.PIPE,
+                            universal_newlines=True)
     return proc
 
 def make_connection():
@@ -104,7 +105,7 @@ def server_get(endpoint):
     conn.request("GET", endpoint)
 
     resp = conn.getresponse()
-    data = resp.read()
+    data = resp.read().decode('utf-8')
     return resp, data
 
 def assert_json(endpoint, expected):
