@@ -1,3 +1,4 @@
+from __future__ import print_function
 
 import datetime
 from dateutil.tz import tzlocal
@@ -27,7 +28,7 @@ def setup_module():
     if not os.path.exists(port_file):
         global _process
         dummy_compstate = create_compstate(ROOT + '/tests/dummy/')
-        print "Using '{0}'.".format(dummy_compstate)
+        print("Using '{0}'.".format(dummy_compstate))
         _process = run_server(dummy_compstate)
         line = _process.stdout.readline()
         assert line.startswith("logging configured"), line
