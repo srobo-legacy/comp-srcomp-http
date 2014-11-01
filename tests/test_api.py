@@ -2,7 +2,7 @@ from __future__ import print_function
 
 import datetime
 from dateutil.tz import tzlocal
-import httplib
+from six.moves import http_client as httplib
 import json
 import os
 import shutil
