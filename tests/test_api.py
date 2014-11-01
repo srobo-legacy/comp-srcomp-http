@@ -26,7 +26,7 @@ def setup_module():
     port_file = ROOT + '.test-port'
     if not os.path.exists(port_file):
         global _process
-        dummy_compstate = create_compstate(ROOT + '/srcomp/tests/dummy/')
+        dummy_compstate = create_compstate(ROOT + '/tests/dummy/')
         print "Using '{0}'.".format(dummy_compstate)
         _process = run_server(dummy_compstate)
         line = _process.stdout.readline()

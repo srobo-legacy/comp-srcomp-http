@@ -1,3 +1,6 @@
 [submodule "srcomp"]
 	path = srcomp
 	url = git://srobo.org/comp/srcomp
+[submodule "tests/dummy"]
+	path = tests/dummy
+	url = git://studentrobotics.org/comp/dummy-comp.git
