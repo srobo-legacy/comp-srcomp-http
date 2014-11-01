@@ -6,19 +6,19 @@ from srcomp.matches import MatchSchedule, Match, LEAGUE_MATCH
 from query_utils import match_parse_name
 
 def dtime(hour, minute, second = 0):
-    return datetime.datetime(2014, 03, 26,  hour, minute, second)
+    return datetime.datetime(2014, 3, 26,  hour, minute, second)
 
 def get_basic_data():
     the_data = {
         "match_period_length_seconds": 300,
         "delays": [ {
             "delay": 60,
-            "time":  dtime(13, 02)
+            "time":  dtime(13, 2)
         } ],
         "match_periods": {
             "league": [ {
                 "description": "A description of the period",
-                "start_time":   dtime(13, 00),
+                "start_time":   dtime(13,  0),
                 "end_time":     dtime(13, 30),
                 "max_end_time": dtime(13, 40)
             } ],
@@ -64,8 +64,8 @@ def helper(expected_match, at_time, input_str):
 
         assert expected_match == match, "Wrong match returned for '{0}'.".format(input_str)
 
-FIRST_MATCH = Match(0, 'A', ["0A"], dtime(13, 00), dtime(13, 05), LEAGUE_MATCH)
-SECOND_MATCH = Match(1, 'A', ["1A"], dtime(13, 06), dtime(13, 11), LEAGUE_MATCH)
+FIRST_MATCH = Match(0, 'A', ["0A"], dtime(13, 0), dtime(13, 5), LEAGUE_MATCH)
+SECOND_MATCH = Match(1, 'A', ["1A"], dtime(13, 6), dtime(13, 11), LEAGUE_MATCH)
 THIRD_MATCH = Match(2, 'A', ["2A"], dtime(13, 11), dtime(13, 16), LEAGUE_MATCH)
 
 
@@ -74,15 +74,15 @@ def test_previous_before_first():
     helper(None, then, 'previous')
 
 def test_previous_during_first():
-    then = dtime(13, 01)
+    then = dtime(13, 1)
     helper(None, then, 'previous')
 
 def test_previous_during_delay():
-    then = dtime(13, 05, 30)
+    then = dtime(13, 5, 30)
     helper(FIRST_MATCH, then, 'previous')
 
 def test_previous_during_second():
-    then = dtime(13, 07)
+    then = dtime(13, 7)
     helper(FIRST_MATCH, then, 'previous')
 
 def test_previous_during_last():
@@ -92,7 +92,7 @@ def test_previous_during_last():
 def test_previous_after_last():
     # NB: this value doesn't quite feel right -- is there a reason
     # not to return the final match?
-    then = dtime(17, 00)
+    then = dtime(17, 0)
     helper(None, then, 'previous')
 
 
@@ -101,11 +101,11 @@ def test_current_before_first():
     helper(None, then, 'current')
 
 def test_current_during_first():
-    then = dtime(13, 01)
+    then = dtime(13, 1)
     helper(FIRST_MATCH, then, 'current')
 
 def test_current_during_delay():
-    then = dtime(13, 05, 30)
+    then = dtime(13, 5, 30)
     helper(None, then, 'current')
 
 def test_current_during_last():
@@ -113,7 +113,7 @@ def test_current_during_last():
     helper(THIRD_MATCH, then, 'current')
 
 def test_current_after_last():
-    then = dtime(14, 00)
+    then = dtime(14, 0)
     helper(None, then, 'current')
 
 
@@ -122,15 +122,15 @@ def test_next_before_first():
     helper(FIRST_MATCH, then, 'next')
 
 def test_next_during_first():
-    then = dtime(13, 01)
+    then = dtime(13, 1)
     helper(SECOND_MATCH, then, 'next')
 
 def test_next_during_delay():
-    then = dtime(13, 05, 30)
+    then = dtime(13, 5, 30)
     helper(SECOND_MATCH, then, 'next')
 
 def test_next_during_second():
-    then = dtime(13, 07)
+    then = dtime(13, 7)
     helper(THIRD_MATCH, then, 'next')
 
 def test_next_during_last():
@@ -138,7 +138,7 @@ def test_next_during_last():
     helper(None, then, 'next')
 
 def test_next_after_last():
-    then = dtime(17, 00)
+    then = dtime(17, 0)
     helper(None, then, 'next')
 
 
@@ -147,15 +147,15 @@ def test_next_1_before_first():
     helper(SECOND_MATCH, then, 'next+1')
 
 def test_next_1_during_first():
-    then = dtime(13, 01)
+    then = dtime(13, 1)
     helper(THIRD_MATCH, then, 'next+1')
 
 def test_next_1_during_delay():
-    then = dtime(13, 05, 30)
+    then = dtime(13, 5, 30)
     helper(THIRD_MATCH, then, 'next+1')
 
 def test_next_1_during_second():
-    then = dtime(13, 07)
+    then = dtime(13, 7)
     helper(None, then, 'next+1')
 
 def test_next_1_during_last():
@@ -163,7 +163,7 @@ def test_next_1_during_last():
     helper(None, then, 'next+1')
 
 def test_next_1_after_last():
-    then = dtime(17, 00)
+    then = dtime(17, 0)
     helper(None, then, 'next+1')
 
 
@@ -172,15 +172,15 @@ def test_next_2_before_first():
     helper(THIRD_MATCH, then, 'next+2')
 
 def test_next_2_during_first():
-    then = dtime(13, 01)
+    then = dtime(13, 1)
     helper(None, then, 'next+2')
 
 def test_next_2_during_delay():
-    then = dtime(13, 05, 30)
+    then = dtime(13, 5, 30)
     helper(None, then, 'next+2')
 
 def test_next_2_during_second():
-    then = dtime(13, 07)
+    then = dtime(13, 7)
     helper(None, then, 'next+2')
 
 def test_next_2_during_last():
@@ -188,6 +188,6 @@ def test_next_2_during_last():
     helper(None, then, 'next+2')
 
 def test_next_2_after_last():
-    then = dtime(17, 00)
+    then = dtime(17, 0)
     helper(None, then, 'next+2')
 
