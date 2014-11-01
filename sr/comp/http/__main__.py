@@ -2,8 +2,8 @@
 
 from flask import g, Flask, jsonify, request
 
-from .manager import SRCompManager
-from .query_utils import match_json_info, match_parse_name
+from sr.comp.http.manager import SRCompManager
+from sr.comp.http.query_utils import match_json_info, match_parse_name
 
 app = Flask(__name__)
 
@@ -154,7 +154,7 @@ def state_label():
 if __name__ == '__main__':
     from argparse import ArgumentParser
 
-    from . import config
+    from sr.comp.http import config
 
     parser = ArgumentParser( description = "SR Competition info API HTTP server" )
     parser.add_argument("compstate", help = "Competition state git repository path")

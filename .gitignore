@@ -1,3 +1,6 @@
 /compstate
 *.pyc
 
+build
+dist
+sr.comp.http.egg-info
