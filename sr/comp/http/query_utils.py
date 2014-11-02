@@ -1,6 +1,7 @@
 
 import datetime
 from dateutil.tz import tzlocal
+from flask import url_for
 
 def match_json_info(comp, match):
     if match:
@@ -11,6 +12,9 @@ def match_json_info(comp, match):
             "type": match.type,
             "start_time": match.start_time.isoformat(),
             "end_time": match.end_time.isoformat(),
+            "url": url_for('match_info',
+                           arena=match.arena,
+                           match_number=match.num)
         }
 
         league = comp.scores.league

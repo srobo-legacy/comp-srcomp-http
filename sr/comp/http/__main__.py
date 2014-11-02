@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from flask import g, Flask, jsonify, request
+from flask import g, Flask, jsonify, request, url_for
 
 from sr.comp.http.manager import SRCompManager
 from sr.comp.http.query_utils import match_json_info, match_parse_name
@@ -39,7 +39,7 @@ def match_query(arena):
             result.append(info)
 
         return jsonify(matches=result)
-    return jsonify(error=True), 400
+    return jsonify(error=True, msg="Missing parameter: ?numbers"), 400
 
 @app.route("/matches/<arena>/<int:match_number>")
 def match_info(arena, match_number):
@@ -150,6 +150,30 @@ def corner(number):
 def state_label():
     comp = g.comp_man.get_comp()
     return jsonify(state = comp.state)
+
+@app.route("/")
+def api_root():
+    return jsonify(state=url_for('state_label'),
+                   arenas=url_for('arenas'),
+                   corners=url_for('corners'),
+                   matches=url_for('api_matches'),
+                   teams=url_for('teams'),
+                   scores=url_for('api_scores'))
+
+@app.route('/matches')
+def api_matches():
+    comp = g.comp_man.get_comp()
+    arena_info = {arena: {'all': url_for('match_query', arena=arena),
+                          'current': url_for('current_match_info', arena=arena)}
+                    for arena in comp.arenas}
+    return jsonify(all=url_for('match_info_all'),
+                   periods=url_for('match_info_periods'),
+                   knockouts=url_for('knockout_matches'),
+                   arenas=arena_info)
+
+@app.route('/scores')
+def api_scores():
+    return jsonify(league=url_for('scores'))
 
 if __name__ == '__main__':
     from argparse import ArgumentParser
