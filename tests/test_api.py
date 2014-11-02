@@ -121,25 +121,24 @@ def assert_json(endpoint, expected):
 
 def test_endpoints():
     endpoints = [
-        '/matches/A/0',
-        '/matches/A/1',
-        '/matches/B/0',
-        '/matches/B/1',
-
-        '/matches/A/0-1',
-        '/matches/B/0-1',
-
-        '/matches/A/current',
-        '/matches/B/current',
-
-        '/matches/knockouts',
-        '/scores/league',
+        '/',
         '/arenas',
-        '/corner/0',
-        '/corner/1',
-        '/corner/2',
-        '/corner/3',
-        '/state',
+        '/arenas/A',
+        '/arenas/B',
+        '/teams',
+        '/teams/CLF',
+        '/corners',
+        '/corners/0',
+        '/corners/1',
+        '/corners/2',
+        '/corners/3',
+        '/matches',
+        '/matches?arenas=A&range=current',
+        '/matches?arenas=B&range=current',
+        '/matches?range=0-1',
+        '/matches?arenas=B&range=1',
+        '/matches?type=knockout',
+        '/state'
     ]
 
     for e in endpoints:
