@@ -67,11 +67,16 @@ def get_team(tla):
 
     return jsonify(team_info(comp, team))
 
+def format_corner(corner):
+    data = {'get': url_for('get_corner', number=corner.number)}
+    data.update(corner.__dict__)
+    return data
+
 @app.route("/corners")
 def corners():
     comp = g.comp_man.get_comp()
-    return jsonify(corners={number: url_for('get_corner', number=number)
-                              for number in comp.corners})
+    return jsonify(corners={number: format_corner(corner)
+                              for number, corner in comp.corners.items()})
 
 @app.route("/corners/<int:number>")
 def get_corner(number):
@@ -80,7 +85,7 @@ def get_corner(number):
     if number not in comp.corners:
         return jsonify(error=True,msg="Invalid corner"), 404
 
-    return jsonify(**comp.corners[number].__dict__)  # **Corner doens't work
+    return jsonify(**format_corner(comp.corners[number]))  # **Corner doens't work
 
 @app.route("/state")
 def state():
