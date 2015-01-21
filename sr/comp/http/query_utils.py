@@ -4,13 +4,23 @@ from dateutil.tz import tzlocal
 
 def match_json_info(comp, match):
     if match:
+        match_period_lengths = comp.schedule.match_period_lengths
+
         info = {
             "num": match.num,
             "arena": match.arena,
             "teams": match.teams,
             "type": match.type,
-            "start_time": match.start_time.isoformat(),
-            "end_time": match.end_time.isoformat(),
+            "times": {
+                "period": {
+                    "start": match.start_time.isoformat(),
+                    "end": match.end_time.isoformat()
+                },
+                "game": {
+                    "start": (match.start_time + match_period_lengths['pre']).isoformat(),
+                    "end": (match.end_time + match_period_lengths['pre'] + match_period_lengths['match']).isoformat()
+                }
+            }
         }
 
         league = comp.scores.league
