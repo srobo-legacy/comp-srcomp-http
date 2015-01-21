@@ -25,6 +25,7 @@ def root():
     return jsonify(arenas=url_for('arenas'),
                    teams=url_for('teams'),
                    corners=url_for('corners'),
+                   config=url_for('config'),
                    state=url_for('state'),
                    matches=url_for('matches'))
 
@@ -86,6 +87,13 @@ def state():
     comp = g.comp_man.get_comp()
     return jsonify(state = comp.state)
 
+def get_config_dict(comp):
+    return {'match_period': int(comp.schedule.match_period.total_seconds())}
+
+@app.route("/config")
+def config():
+    comp = g.comp_man.get_comp()
+    return jsonify(config=get_config_dict(comp))
 
 def parse_difference_string(string, type_converter=int):
     """
