@@ -88,7 +88,8 @@ def state():
     return jsonify(state = comp.state)
 
 def get_config_dict(comp):
-    return {'match_period': int(comp.schedule.match_period.total_seconds())}
+    return {'match_periods': {key: int(value.total_seconds())
+                for key, value in comp.schedule.match_period_lengths.items()}}
 
 @app.route("/config")
 def config():
