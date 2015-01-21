@@ -29,16 +29,29 @@ def root():
                    state=url_for('state'),
                    matches=url_for('matches'))
 
+
+def format_arena(arena):
+    data = {'get': url_for('get_arena', arena=arena.name)}
+    data.update(arena.__dict__)
+    return data
+
+
 @app.route('/arenas')
 def arenas():
     comp = g.comp_man.get_comp()
+    return jsonify(arenas={name: format_arena(arena)
+                              for name, arena in comp.arenas.items()})
 
-    return jsonify(arenas={name: url_for('get_arena', arena=name)
-                            for name in comp.arenas})
 
 @app.route('/arenas/<arena>')
 def get_arena(arena):
-    return jsonify(name=arena)
+    comp = g.comp_man.get_comp()
+
+    if arena not in comp.arenas:
+        return jsonify(error=True, msg="Invalid arena"), 404
+
+    return jsonify(**format_arena(comp.arenas[arena]))
+
 
 def team_info(comp, team):
     scores = comp.scores.league.teams[team.tla]

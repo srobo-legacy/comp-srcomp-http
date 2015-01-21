@@ -10,7 +10,12 @@ def dtime(hour, minute, second = 0):
 
 def get_basic_data():
     the_data = {
-        "match_period_length_seconds": 300,
+        "match_period_lengths": {
+            "pre": 90,
+            "match": 180,
+            "post": 30,
+            "total": 300
+        },
         "delays": [ {
             "delay": 60,
             "time":  dtime(13, 2)
@@ -190,4 +195,3 @@ def test_next_2_during_last():
 def test_next_2_after_last():
     then = dtime(17, 0)
     helper(None, then, 'next+2')
-
