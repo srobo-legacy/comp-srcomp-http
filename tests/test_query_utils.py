@@ -2,7 +2,8 @@
 import datetime
 import mock
 
-from sr.comp.matches import MatchSchedule, Match, LEAGUE_MATCH
+from sr.comp.matches import MatchSchedule
+from sr.comp.match_period import Match, MatchType
 from sr.comp.http.query_utils import match_parse_name
 
 def dtime(hour, minute, second = 0):
@@ -69,9 +70,9 @@ def helper(expected_match, at_time, input_str):
 
         assert expected_match == match, "Wrong match returned for '{0}'.".format(input_str)
 
-FIRST_MATCH = Match(0, 'A', ["0A"], dtime(13, 0), dtime(13, 5), LEAGUE_MATCH)
-SECOND_MATCH = Match(1, 'A', ["1A"], dtime(13, 6), dtime(13, 11), LEAGUE_MATCH)
-THIRD_MATCH = Match(2, 'A', ["2A"], dtime(13, 11), dtime(13, 16), LEAGUE_MATCH)
+FIRST_MATCH = Match(0, 'A', ["0A"], dtime(13, 0), dtime(13, 5), MatchType.league)
+SECOND_MATCH = Match(1, 'A', ["1A"], dtime(13, 6), dtime(13, 11), MatchType.league)
+THIRD_MATCH = Match(2, 'A', ["2A"], dtime(13, 11), dtime(13, 16), MatchType.league)
 
 
 def test_previous_before_first():

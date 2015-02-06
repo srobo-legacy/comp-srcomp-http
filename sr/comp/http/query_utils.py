@@ -10,7 +10,7 @@ def match_json_info(comp, match):
             "num": match.num,
             "arena": match.arena,
             "teams": match.teams,
-            "type": match.type,
+            "type": match.type.value,
             "times": {
                 "period": {
                     "start": match.start_time.isoformat(),
