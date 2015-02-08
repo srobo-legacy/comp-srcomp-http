@@ -4,7 +4,7 @@ import argparse
 import os
 from subprocess import check_call, check_output
 
-from manager import update_lock
+from sr.comp.http.manager import update_lock
 
 parser = argparse.ArgumentParser(description = "Update the given compstate repo in a safe manner")
 parser.add_argument("compstate", help = "Competition state git repository path")

@@ -16,15 +16,13 @@ APIs to the competition state.
 Usage
 -----
 
-Run with ``./app.py``.
+Run with ``./run $COMPSTATE``.
 
 Test with ``./run-tests``.
 
-Developers almost certainly don't want to use this repo directly, and
-are instead encouraged to use the `SRComp
+Developers may wish to use the `SRComp
 Dev <https://www.studentrobotics.org/cgit/comp/srcomp-dev.git>`__ repo
-instead. That repo includes (and then serves) most of the clients of the
-API, which makes side-by-side development much easier.
+to setup a dev instance.
 
 State Caching
 ~~~~~~~~~~~~~
