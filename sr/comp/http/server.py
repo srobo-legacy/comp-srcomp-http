@@ -158,16 +158,18 @@ def matches():
         return dateutil.parser.parse(string)
 
     filters = [
-        ('type', str),
-        ('arena', str),
-        ('num', int),
-        ('start_time', parse_date),
-        ('end_time', parse_date)
+        ('type', str, lambda x: x['type']),
+        ('arena', str, lambda x: x['arena']),
+        ('num', int, lambda x: x['num']),
+        ('game_start_time', parse_date, lambda x: x['times']['game']['start']),
+        ('game_end_time', parse_date, lambda x: x['times']['game']['end']),
+        ('period_start_time', parse_date, lambda x: x['times']['period']['start']),
+        ('period_end_time', parse_date, lambda x: x['times']['period']['end'])
     ]
 
-    for filter_key, filter_type in filters:
+    for filter_key, filter_type, filter_value in filters:
         if filter_key in request.args:
             predicate = parse_difference_string(request.args[filter_key], filter_type)
-            matches = [match for match in matches if predicate(filter_type(match[filter_key]))]
+            matches = [match for match in matches if predicate(filter_type(filter_value(match)))]
 
     return jsonify(matches=matches)
