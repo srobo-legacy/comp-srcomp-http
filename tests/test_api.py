@@ -4,6 +4,8 @@ import json
 import os.path
 from flask.testing import FlaskClient
 
+from nose.tools import eq_
+
 from sr.comp.http import app
 
 COMPSTATE = os.path.join(os.path.dirname(__file__), 'dummy')
@@ -55,10 +57,10 @@ def test_endpoints():
         yield assert_json, e, 200
 
 def test_root():
-    assert_json('/', 200, {'config': '/config',
-                           'arenas': '/arenas',
-                           'teams': '/teams',
-                           'corners': '/corners',
-                           'matches': '/matches',
-                           'state': '/state'})
+    eq_(server_get('/'), {'config': '/config',
+                          'arenas': '/arenas',
+                          'teams': '/teams',
+                          'corners': '/corners',
+                          'matches': '/matches',
+                          'state': '/state'})
 
