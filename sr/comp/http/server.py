@@ -2,7 +2,7 @@ import dateutil.parser
 from flask import g, Flask, jsonify, request, url_for
 
 from sr.comp.http.manager import SRCompManager
-from sr.comp.http.query_utils import match_json_info, match_parse_name
+from sr.comp.http.query_utils import match_json_info
 
 app = Flask('sr.comp.http')
 
