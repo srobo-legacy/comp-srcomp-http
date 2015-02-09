@@ -93,3 +93,26 @@ def test_team():
                                    'scores': {'league': 68,
                                               'game': 69},
                                    'get': '/teams/CLF'})
+
+def test_matches():
+    eq_(server_get('/matches?num=0&arena=A'),
+         {'matches': [
+           {'num': 0,
+            'arena': 'A',
+            'type': 'league',
+            'teams': [None, 'CLY', 'TTN', None],
+            'scores': {
+               'game': {'CLY': 9, 'TTN': 6},
+               'league': {'CLY': 8, 'TTN': 6}
+            },
+            'times': {
+               'period': {
+                  'start': '2014-04-26T13:00:00+01:00',
+                  'end':   '2014-04-26T13:05:00+01:00'
+               },
+               'game': {
+                  'start': '2014-04-26T13:01:30+01:00',
+                  'end':   '2014-04-26T13:04:30+01:00'
+               }
+            }}
+         ]})
