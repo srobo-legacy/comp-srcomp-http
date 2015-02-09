@@ -64,4 +64,4 @@ def test_inverted_bounds():
 
 @raises(ValueError)
 def test_double_open():
-    parse_difference_string('..')
+    parse_difference_string('..', str)

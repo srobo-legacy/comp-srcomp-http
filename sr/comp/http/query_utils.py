@@ -44,6 +44,8 @@ def parse_difference_string(string, type_converter=int):
     accepts a single argument and returns ``True`` if it is in the difference.
     """
     separator = '..'
+    if string == separator:
+        raise ValueError('Must specify at least one bound.')
     tokens = string.split(separator)
 
     if len(tokens) > 2:
