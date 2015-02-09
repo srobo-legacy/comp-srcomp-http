@@ -86,3 +86,10 @@ def test_arenas():
            'B': {'get': '/arenas/B',
                  'name': 'B',
                  'display_name': 'B'}})
+
+def test_team():
+    eq_(server_get('/teams/CLF'), {'tla': 'CLF',
+                                   'name': 'Clifton High School',
+                                   'scores': {'league': 68,
+                                              'game': 69},
+                                   'get': '/teams/CLF'})
