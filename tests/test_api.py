@@ -70,12 +70,11 @@ def test_invalid_corner():
     server_get('/corners/12')
 
 def test_config():
-    eq_(server_get('/config'), {'config':
-                                 {'match_periods':
-                                   {'pre': 90,
-                                    'match': 180,
-                                    'post': 30,
-                                    'total': 300}}})
+    cfg = server_get('/config')['config']
+    eq_(cfg['match_periods'], {'pre': 90,
+                               'match': 180,
+                               'post': 30,
+                               'total': 300})
 
 def test_arena():
     eq_(server_get('/arenas/A'), {'get': '/arenas/A',

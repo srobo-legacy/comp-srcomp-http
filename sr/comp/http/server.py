@@ -1,4 +1,5 @@
 import dateutil.parser
+from pkg_resources import working_set
 from flask import g, Flask, jsonify, request, url_for
 
 from sr.comp.http.manager import SRCompManager
@@ -107,7 +108,14 @@ def state():
 
 def get_config_dict(comp):
     return {'match_periods': {key: int(value.total_seconds())
-                for key, value in comp.schedule.match_period_lengths.items()}}
+                for key, value in comp.schedule.match_period_lengths.items()},
+            'server':
+              {library: working_set.by_key[library].version
+                for library in ('sr.comp',
+                                'sr.comp.http',
+                                'sr.comp.ranker',
+                                'flask')}
+            }
 
 @app.route("/config")
 def config():
