@@ -18,7 +18,7 @@ def match_json_info(comp, match):
                 },
                 "game": {
                     "start": (match.start_time + match_period_lengths['pre']).isoformat(),
-                    "end": (match.start_time + match_period_lengths['post'] + match_period_lengths['match']).isoformat()
+                    "end": (match.start_time + match_period_lengths['pre'] + match_period_lengths['match']).isoformat()
                 }
             }
         }
