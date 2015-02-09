@@ -1,4 +1,5 @@
 import dateutil.parser
+import os.path
 from pkg_resources import working_set
 from flask import g, Flask, jsonify, request, url_for
 
@@ -12,7 +13,7 @@ comp_man = SRCompManager()
 @app.before_request
 def before_request():
     if "COMPSTATE" in app.config:
-        comp_man.root_dir = app.config["COMPSTATE"]
+        comp_man.root_dir = os.path.realpath(app.config["COMPSTATE"])
     g.comp_man = comp_man
 
 @app.after_request
