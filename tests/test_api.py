@@ -65,3 +65,10 @@ def test_corner():
                                    'number': 0,
                                    'colour': '#00ff00'})
 
+def test_config():
+    eq_(server_get('/config'), {'config':
+                                 {'match_periods':
+                                   {'pre': 90,
+                                    'match': 180,
+                                    'post': 30,
+                                    'total': 300}}})
