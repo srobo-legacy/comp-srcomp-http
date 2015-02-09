@@ -4,6 +4,8 @@ import json
 import os.path
 from flask.testing import FlaskClient
 
+from nose.tools import eq_
+
 from sr.comp.http import app
 
 COMPSTATE = os.path.join(os.path.dirname(__file__), 'dummy')
@@ -11,23 +13,20 @@ app.config['COMPSTATE'] = COMPSTATE
 
 CLIENT = FlaskClient(app)
 
+class APIError(Exception):
+    pass
+
 def server_get(endpoint):
     response, code, header = CLIENT.get(endpoint)
     response_code = int(code.split(' ')[0])
     response_data = b''.join(response)
-    return response_code, response_data
-
-def assert_json(endpoint, expected, expected_data=None):
-    status, raw_data = server_get(endpoint)
-    assert expected == status, raw_data
-
-    data = json.loads(raw_data.decode('utf-8'))
-    if expected_data is None:
-        assert data is not None
+    if response_code != 200:
+        raise APIError('Returned status {}'.format(response_code))
+    return json.loads(response_data.decode('utf-8'))
+    if response_code == 200:
+        return 200, json.loads(response_data.decode('utf-8'))
     else:
-        assert data == expected_data, str(data)
-
-    return data
+        return response_code, None
 
 def test_endpoints():
     endpoints = [
@@ -52,13 +51,13 @@ def test_endpoints():
     ]
 
     for e in endpoints:
-        yield assert_json, e, 200
+        yield server_get, e
 
 def test_root():
-    assert_json('/', 200, {'config': '/config',
-                           'arenas': '/arenas',
-                           'teams': '/teams',
-                           'corners': '/corners',
-                           'matches': '/matches',
-                           'state': '/state'})
+    eq_(server_get('/'), {'config': '/config',
+                          'arenas': '/arenas',
+                          'teams': '/teams',
+                          'corners': '/corners',
+                          'matches': '/matches',
+                          'state': '/state'})
 
