@@ -2,7 +2,7 @@ import dateutil.parser
 from flask import g, Flask, jsonify, request, url_for
 
 from sr.comp.http.manager import SRCompManager
-from sr.comp.http.query_utils import match_json_info
+from sr.comp.http.query_utils import match_json_info, parse_difference_string
 
 app = Flask('sr.comp.http')
 
@@ -113,36 +113,6 @@ def get_config_dict(comp):
 def config():
     comp = g.comp_man.get_comp()
     return jsonify(config=get_config_dict(comp))
-
-def parse_difference_string(string, type_converter=int):
-    """
-    Parse a difference string (x..x, ..x, x.., x) and return a function that
-    accepts a single argument and returns ``True`` if it is in the difference.
-    """
-    separator = '..'
-    tokens = string.split(separator)
-
-    if len(tokens) > 2:
-        raise ValueError('Argument is not a different string.')
-    elif len(tokens) == 1:
-        converted_token = type_converter(tokens[0])
-        return lambda x: x == converted_token
-    elif len(tokens) == 2:
-        if not tokens[1]:
-            lower_bound = type_converter(tokens[0])
-            return lambda x: x >= lower_bound
-        elif not tokens[0]:
-            upper_bound = type_converter(tokens[1])
-            return lambda x: x <= upper_bound
-        else:
-            lhs = type_converter(tokens[0])
-            rhs = type_converter(tokens[1])
-            if lhs > rhs:
-                raise ValueError('Bounds are the wrong way around.')
-            return lambda x: lhs <= x <= rhs
-    else:
-        raise AssertionError('Argument contains unknown input.')
-
 
 @app.route("/matches")
 def matches():
