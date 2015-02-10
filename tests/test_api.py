@@ -4,7 +4,7 @@ import json
 import os.path
 from flask.testing import FlaskClient
 
-from nose.tools import eq_
+from nose.tools import eq_, raises
 
 from sr.comp.http import app
 
@@ -65,6 +65,10 @@ def test_corner():
                                    'number': 0,
                                    'colour': '#00ff00'})
 
+@raises(APIError)
+def test_invalid_corner():
+    server_get('/corners/12')
+
 def test_config():
     eq_(server_get('/config'), {'config':
                                  {'match_periods':
@@ -77,6 +81,10 @@ def test_arena():
     eq_(server_get('/arenas/A'), {'get': '/arenas/A',
                                   'name': 'A',
                                   'display_name': 'A'})
+
+@raises(APIError)
+def test_invalid_arena():
+    server_get('/arenas/Z')
 
 def test_arenas():
     eq_(server_get('/arenas')['arenas'],
