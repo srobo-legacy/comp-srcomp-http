@@ -72,3 +72,17 @@ def test_config():
                                     'match': 180,
                                     'post': 30,
                                     'total': 300}}})
+
+def test_arena():
+    eq_(server_get('/arenas/A'), {'get': '/arenas/A',
+                                  'name': 'A',
+                                  'display_name': 'A'})
+
+def test_arenas():
+    eq_(server_get('/arenas')['arenas'],
+          {'A': {'get': '/arenas/A',
+                 'name': 'A',
+                 'display_name': 'A'},
+           'B': {'get': '/arenas/B',
+                 'name': 'B',
+                 'display_name': 'B'}})
