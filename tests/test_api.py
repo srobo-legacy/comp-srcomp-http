@@ -23,10 +23,6 @@ def server_get(endpoint):
     if response_code != 200:
         raise APIError('Returned status {}'.format(response_code))
     return json.loads(response_data.decode('utf-8'))
-    if response_code == 200:
-        return 200, json.loads(response_data.decode('utf-8'))
-    else:
-        return response_code, None
 
 def test_endpoints():
     endpoints = [
@@ -60,4 +56,12 @@ def test_root():
                           'corners': '/corners',
                           'matches': '/matches',
                           'state': '/state'})
+
+def test_state():
+    assert isinstance(server_get('/state')['state'], str)
+
+def test_corner():
+    eq_(server_get('/corners/0'), {'get': '/corners/0',
+                                   'number': 0,
+                                   'colour': '#00ff00'})
 
