@@ -1,4 +1,6 @@
+import datetime
 import dateutil.parser
+import dateutil.tz
 import os.path
 from pkg_resources import working_set
 from flask import g, Flask, jsonify, request, url_for
@@ -29,7 +31,8 @@ def root():
                    corners=url_for('corners'),
                    config=url_for('config'),
                    state=url_for('state'),
-                   matches=url_for('matches'))
+                   matches=url_for('matches'),
+                   current=url_for('current_state'))
 
 
 def format_arena(arena):
@@ -152,3 +155,16 @@ def matches():
             matches = [match for match in matches if predicate(filter_type(filter_value(match)))]
 
     return jsonify(matches=matches)
+
+@app.route("/current")
+def current_state():
+    comp = g.comp_man.get_comp()
+
+    time = datetime.datetime.now(comp.timezone)
+    matches = []
+    for slots in comp.schedule.matches:
+        for match in slots.values():
+            if match.start_time <= time < match.end_time:
+                matches.append(match_json_info(comp, match))
+
+    return jsonify(time=time.isoformat(), matches=matches)

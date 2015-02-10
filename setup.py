@@ -21,4 +21,5 @@ setup(name="sr.comp.http",
                         'simplejson >=3.6, <4',
                         'python-dateutil >=2.2, <3'],
       setup_requires=['nose >=1.3, <2'],
+      tests_require=['freezegun >=0.2.8, <0.3'],
       test_suite='nose.collector')
