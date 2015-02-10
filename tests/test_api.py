@@ -110,13 +110,16 @@ def server_get(endpoint):
     data = resp.read().decode('utf-8')
     return resp, data
 
-def assert_json(endpoint, expected):
+def assert_json(endpoint, expected, expected_data=None):
     resp, raw_data = server_get(endpoint)
     status = resp.status
     assert expected == status, raw_data
 
     data = json.loads(raw_data)
-    assert data is not None
+    if expected_data is None:
+        assert data is not None
+    else:
+        assert data == expected_data, str(data)
 
     return data
 
@@ -144,3 +147,12 @@ def test_endpoints():
 
     for e in endpoints:
         yield assert_json, e, 200
+
+def test_root():
+    assert_json('/', 200, {'config': '/config',
+                           'arenas': '/arenas',
+                           'teams': '/teams',
+                           'corners': '/corners',
+                           'matches': '/matches',
+                           'state': '/state'})
+
