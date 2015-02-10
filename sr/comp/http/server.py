@@ -33,7 +33,7 @@ def root():
 
 
 def format_arena(arena):
-    data = {'get': url_for('get_arena', arena=arena.name)}
+    data = {'get': url_for('get_arena', name=arena.name)}
     data.update(arena.__dict__)
     return data
 
@@ -45,14 +45,14 @@ def arenas():
                               for name, arena in comp.arenas.items()})
 
 
-@app.route('/arenas/<arena>')
-def get_arena(arena):
+@app.route('/arenas/<name>')
+def get_arena(name):
     comp = g.comp_man.get_comp()
 
-    if arena not in comp.arenas:
+    if name not in comp.arenas:
         return jsonify(error=True, msg="Invalid arena"), 404
 
-    return jsonify(**format_arena(comp.arenas[arena]))
+    return jsonify(**format_arena(comp.arenas[name]))
 
 
 def team_info(comp, team):
