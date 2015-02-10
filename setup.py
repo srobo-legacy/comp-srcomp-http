@@ -20,5 +20,8 @@ setup(name="sr.comp.http",
                         'Flask >=0.10, <0.11',
                         'simplejson >=3.6, <4',
                         'python-dateutil >=2.2, <3'],
-      setup_requires=['nose >=1.3, <2'],
+      setup_requires=[
+          'nose >=1.3, <2',
+          'freezegun >=0.2.8, <0.3'
+      ],
       test_suite='nose.collector')

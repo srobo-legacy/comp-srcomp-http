@@ -4,6 +4,7 @@ import json
 import os.path
 from flask.testing import FlaskClient
 
+from freezegun import freeze_time
 from nose.tools import eq_, raises
 
 from sr.comp.http import app
@@ -55,7 +56,8 @@ def test_root():
                           'teams': '/teams',
                           'corners': '/corners',
                           'matches': '/matches',
-                          'state': '/state'})
+                          'state': '/state',
+                          'current': '/current'})
 
 def test_state():
     assert isinstance(server_get('/state')['state'], str)
@@ -123,3 +125,50 @@ def test_matches():
                }
             }}
          ]})
+
+@freeze_time('2014-04-26 13:01:00')  # UTC
+def test_current_match_time():
+    eq_(server_get('/current')['time'],
+        '2014-04-26T13:01:00+01:00')
+
+@freeze_time('2014-04-26 13:01:00')  # UTC
+def test_current_match():
+    match_list = server_get('/current')['matches']
+    match_list.sort(key=lambda match: match['arena'])
+    ref = [{'num': 0,
+            'arena': 'A',
+            'type': 'league',
+            'teams': [None, 'CLY', 'TTN', None],
+            'scores': {
+               'game': {'CLY': 9, 'TTN': 6},
+               'league': {'CLY': 8, 'TTN': 6},
+            },
+            'times': {
+               'period': {
+                  'start': '2014-04-26T13:00:00+01:00',
+                  'end':   '2014-04-26T13:05:00+01:00'
+               },
+               'game': {
+                  'start': '2014-04-26T13:01:30+01:00',
+                  'end':   '2014-04-26T13:04:30+01:00'
+               }
+            }},
+           {'num': 0,
+            'arena': 'B',
+            'type': 'league',
+            'teams': ['GRS', 'QMC', None, None],
+            'scores': {
+               'game': {'QMC': 3, 'GRS': 5},
+               'league': {'QMC': 6, 'GRS': 8},
+            },
+            'times': {
+               'period': {
+                  'start': '2014-04-26T13:00:00+01:00',
+                  'end':   '2014-04-26T13:05:00+01:00'
+               },
+               'game': {
+                  'start': '2014-04-26T13:01:30+01:00',
+                  'end':   '2014-04-26T13:04:30+01:00'
+               }
+            }}]
+    eq_(match_list, ref)
