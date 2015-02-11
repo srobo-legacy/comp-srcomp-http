@@ -3,7 +3,7 @@ import dateutil.parser
 import dateutil.tz
 import os.path
 from pkg_resources import working_set
-from flask import g, Flask, jsonify, request, url_for
+from flask import g, Flask, jsonify, request, url_for, abort
 
 from sr.comp.http.manager import SRCompManager
 from sr.comp.http.query_utils import match_json_info, parse_difference_string
@@ -81,8 +81,10 @@ def teams():
 def get_team(tla):
     comp = g.comp_man.get_comp()
 
-    team = comp.teams[tla]
-
+    try:
+        team = comp.teams[tla]
+    except KeyError:
+        abort(404)
     return jsonify(team_info(comp, team))
 
 def format_corner(corner):

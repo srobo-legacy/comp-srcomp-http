@@ -17,13 +17,19 @@ CLIENT = FlaskClient(app)
 class APIError(Exception):
     pass
 
+class API404Error(Exception):
+    pass
+
 def server_get(endpoint):
     response, code, header = CLIENT.get(endpoint)
     response_code = int(code.split(' ')[0])
     response_data = b''.join(response)
-    if response_code != 200:
+    if response_code == 200:
+        return json.loads(response_data.decode('utf-8'))
+    elif response_code == 404:
+        raise API404Error()
+    else:
         raise APIError('Returned status {}'.format(response_code))
-    return json.loads(response_data.decode('utf-8'))
 
 def test_endpoints():
     endpoints = [
@@ -67,7 +73,7 @@ def test_corner():
                                    'number': 0,
                                    'colour': '#00ff00'})
 
-@raises(APIError)
+@raises(API404Error)
 def test_invalid_corner():
     server_get('/corners/12')
 
@@ -83,7 +89,7 @@ def test_arena():
                                   'name': 'A',
                                   'display_name': 'A'})
 
-@raises(APIError)
+@raises(API404Error)
 def test_invalid_arena():
     server_get('/arenas/Z')
 
@@ -102,6 +108,10 @@ def test_team():
                                    'scores': {'league': 68,
                                               'game': 69},
                                    'get': '/teams/CLF'})
+
+@raises(API404Error)
+def test_bad_team():
+    server_get('/teams/BEES')
 
 def test_matches():
     eq_(server_get('/matches?num=0&arena=A'),
