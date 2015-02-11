@@ -63,7 +63,8 @@ def test_root():
                           'corners': '/corners',
                           'matches': '/matches',
                           'state': '/state',
-                          'current': '/current'})
+                          'current': '/current',
+                          'knockout': '/knockout'})
 
 def test_state():
     assert isinstance(server_get('/state')['state'], str)

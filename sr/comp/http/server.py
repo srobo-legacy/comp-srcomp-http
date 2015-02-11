@@ -36,7 +36,8 @@ def root():
                    config=url_for('config'),
                    state=url_for('state'),
                    matches=url_for('matches'),
-                   current=url_for('current_state'))
+                   current=url_for('current_state'),
+                   knockout=url_for('knockout'))
 
 
 def format_arena(arena):
@@ -174,3 +175,9 @@ def current_state():
                 matches.append(match_json_info(comp, match))
 
     return jsonify(time=time.isoformat(), matches=matches)
+
+
+@app.route('/knockout')
+def knockout():
+    comp = g.comp_man.get_comp()
+    return jsonify(rounds=comp.schedule.knockout_rounds)
