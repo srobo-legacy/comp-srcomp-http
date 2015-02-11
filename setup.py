@@ -22,4 +22,5 @@ setup(name='sr.comp.http',
                         'python-dateutil >=2.2, <3'],
       setup_requires=['nose >=1.3, <2',
                       'Sphinx >=1.2, <2'],
+      tests_require=['freezegun >=0.2.8, <0.3'],
       test_suite='nose.collector')
