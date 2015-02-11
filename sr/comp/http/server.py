@@ -3,12 +3,16 @@ import dateutil.parser
 import dateutil.tz
 import os.path
 from pkg_resources import working_set
+
 from flask import g, Flask, jsonify, request, url_for, abort
 
 from sr.comp.http.manager import SRCompManager
+from sr.comp.http.json import JsonEncoder
 from sr.comp.http.query_utils import match_json_info, parse_difference_string
 
+
 app = Flask('sr.comp.http')
+app.json_encoder = JsonEncoder
 
 comp_man = SRCompManager()
 
