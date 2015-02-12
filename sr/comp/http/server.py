@@ -6,6 +6,7 @@ from pkg_resources import working_set
 
 from flask import g, Flask, jsonify, request, url_for, abort
 
+from sr.comp.match_period import MatchType
 from sr.comp.http.manager import SRCompManager
 from sr.comp.http.json import JsonEncoder
 from sr.comp.http.query_utils import match_json_info, parse_difference_string
@@ -147,7 +148,7 @@ def matches():
         return dateutil.parser.parse(string)
 
     filters = [
-        ('type', str, lambda x: x['type']),
+        ('type', MatchType, lambda x: x['type']),
         ('arena', str, lambda x: x['arena']),
         ('num', int, lambda x: x['num']),
         ('game_start_time', parse_date, lambda x: x['times']['game']['start']),

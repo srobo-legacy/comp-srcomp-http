@@ -137,6 +137,10 @@ def test_matches():
             }}
          ]})
 
+@raises(APIError)
+def test_invalid_match_type():
+    server_get('/matches?type=bees')
+
 @freeze_time('2014-04-26 13:01:00')  # UTC
 def test_current_match_time():
     eq_(server_get('/current')['time'],
