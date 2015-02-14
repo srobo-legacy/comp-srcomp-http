@@ -67,7 +67,8 @@ def test_root():
                           'knockout': '/knockout'})
 
 def test_state():
-    assert isinstance(server_get('/state')['state'], str)
+    state_val = server_get('/state')['state']
+    assert isinstance(state_val, str), repr(state_val)
 
 def test_corner():
     eq_(server_get('/corners/0'), {'get': '/corners/0',
