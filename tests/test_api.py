@@ -90,6 +90,7 @@ def test_config():
 def test_arena():
     eq_(server_get('/arenas/A'), {'get': '/arenas/A',
                                   'name': 'A',
+                                  'colour': '#ff0000',
                                   'display_name': 'A'})
 
 @raises(API404Error)
@@ -100,9 +101,11 @@ def test_arenas():
     eq_(server_get('/arenas')['arenas'],
           {'A': {'get': '/arenas/A',
                  'name': 'A',
+                 'colour': '#ff0000',
                  'display_name': 'A'},
            'B': {'get': '/arenas/B',
                  'name': 'B',
+                 'colour': '#00ff00',
                  'display_name': 'B'}})
 
 def test_team():
