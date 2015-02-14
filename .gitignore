@@ -1,5 +1,6 @@
 /compstate
 *.pyc
+*.egg
 
 build
 dist
