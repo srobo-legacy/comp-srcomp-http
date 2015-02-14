@@ -30,4 +30,4 @@ class JsonEncoder(flask.json.JSONEncoder):
             comp = g.comp_man.get_comp()
             return match_json_info(comp, obj)
         else:
-            return super(JsonEncoder, self).default(obj)
+            return super().default(obj)

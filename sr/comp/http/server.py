@@ -67,11 +67,9 @@ def get_arena(name):
 
 def team_info(comp, team):
     scores = comp.scores.league.teams[team.tla]
-    league_pos = comp.scores.league.positions[team.tla]
     return {'name': team.name,
             'get': url_for('get_team', tla=team.tla),
-            'tla': league_pos,
-            'league_pos': comp.scores.league,
+            'tla': team.tla,
             'scores': {'league': scores.league_points,
                        'game': scores.game_points}}
 
