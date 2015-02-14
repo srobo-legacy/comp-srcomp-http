@@ -108,6 +108,7 @@ def test_arenas():
 def test_team():
     eq_(server_get('/teams/CLF'), {'tla': 'CLF',
                                    'name': 'Clifton High School',
+                                   'league_pos': 36,
                                    'scores': {'league': 68,
                                               'game': 69},
                                    'get': '/teams/CLF'})
