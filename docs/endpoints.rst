@@ -120,7 +120,7 @@ Get the latest commit that the competition is working with.
 /config
 -------
 
-Get the latest commit that the competition is working with.
+Get general information about the configuration of the competition and the host.
 
 .. code-block:: json
 
