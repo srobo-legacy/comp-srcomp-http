@@ -1,6 +1,7 @@
 import datetime
 import dateutil.parser
 import dateutil.tz
+from functools import partial
 import os.path
 from pkg_resources import working_set
 
@@ -169,11 +170,8 @@ def current_state():
     comp = g.comp_man.get_comp()
 
     time = datetime.datetime.now(comp.timezone)
-    matches = []
-    for slots in comp.schedule.matches:
-        for match in slots.values():
-            if match.start_time <= time < match.end_time:
-                matches.append(match_json_info(comp, match))
+    matches = list(map(partial(match_json_info, comp),
+                       comp.schedule.matches_at(time)))
 
     return jsonify(time=time.isoformat(), matches=matches)
 
