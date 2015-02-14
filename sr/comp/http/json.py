@@ -18,8 +18,10 @@ class JsonEncoder(flask.json.JSONEncoder):
         # approriate '_asdict' methods.
         kwargs.pop('namedtuple_as_object')
         kwargs.pop('tuple_as_array')
-        super().__init__(*args, namedtuple_as_object=False,
-                         tuple_as_array=False, **kwargs)
+        super(JsonEncoder, self).__init__(*args,
+                                          namedtuple_as_object=False,
+                                          tuple_as_array=False,
+                                          **kwargs)
 
     def default(self, obj):
         if isinstance(obj, Enum):
