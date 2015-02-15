@@ -38,6 +38,7 @@ def root():
                    config=url_for('config'),
                    state=url_for('state'),
                    matches=url_for('matches'),
+                   periods=url_for('match_periods'),
                    current=url_for('current_state'),
                    knockout=url_for('knockout'))
 
@@ -166,6 +167,28 @@ def matches():
             matches = [match for match in matches if predicate(filter_type(filter_value(match)))]
 
     return jsonify(matches=matches)
+
+@app.route("/periods")
+def match_periods():
+    comp = g.comp_man.get_comp()
+
+    def match_num(period, index):
+        #print("bees: ", len(period.matches))
+        if not period.matches:
+            return None
+        games = list(period.matches[index].values())
+        return games[0].num
+
+    periods = []
+    for match_period in comp.schedule.match_periods:
+        data = match_period._asdict()
+        data['matches'] = {
+            'first_num': match_num(match_period, 0),
+            'last_num': match_num(match_period, -1)
+        }
+        periods.append(data)
+
+    return jsonify(periods=periods)
 
 @app.route("/current")
 def current_state():
