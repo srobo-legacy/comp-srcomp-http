@@ -50,6 +50,7 @@ def test_endpoints():
         '/matches?range=0-1',
         '/matches?arenas=B&range=1',
         '/matches?type=knockout',
+        '/periods',
         '/state'
     ]
 
@@ -62,6 +63,7 @@ def test_root():
                           'teams': '/teams',
                           'corners': '/corners',
                           'matches': '/matches',
+                          'periods': '/periods',
                           'state': '/state',
                           'current': '/current',
                           'knockout': '/knockout'})
@@ -146,6 +148,52 @@ def test_matches():
 @raises(APIError)
 def test_invalid_match_type():
     server_get('/matches?type=bees')
+
+def test_periods():
+    eq_(server_get('/periods'),
+         {"periods": [
+            {
+              "description": "Saturday, 26 April 2014, afternoon",
+              "end_time": "Sat, 26 Apr 2014 16:30:00 GMT",
+              "matches": {
+                "first_num": 0,
+                "last_num": 54
+              },
+              "max_end_time": "Sat, 26 Apr 2014 16:40:00 GMT",
+              "start_time": "Sat, 26 Apr 2014 12:00:00 GMT"
+            },
+            {
+              "description": "Sunday, 27 April 2014, morning",
+              "end_time": "Sun, 27 Apr 2014 11:15:00 GMT",
+              "matches": {
+                "first_num": 55,
+                "last_num": 88
+              },
+              "max_end_time": "Sun, 27 Apr 2014 11:20:00 GMT",
+              "start_time": "Sun, 27 Apr 2014 08:30:00 GMT"
+            },
+            {
+              "description": "Sunday, 27 April 2014, afternoon",
+              "end_time": "Sun, 27 Apr 2014 14:00:00 GMT",
+              "matches": {
+                "first_num": 89,
+                "last_num": 110
+              },
+              "max_end_time": "Sun, 27 Apr 2014 14:00:00 GMT",
+              "start_time": "Sun, 27 Apr 2014 12:15:00 GMT"
+            },
+            {
+              "description": "The Knockouts, Sunday, 27 April 2014, afternoon",
+              "end_time": "Sun, 27 Apr 2014 16:30:00 GMT",
+              "matches": {
+                "first_num": 111,
+                "last_num": 129
+              },
+              "max_end_time": "Sun, 27 Apr 2014 16:30:00 GMT",
+              "start_time": "Sun, 27 Apr 2014 14:30:00 GMT"
+            }
+          ]
+        })
 
 @freeze_time('2014-04-26 13:01:00')  # UTC
 def test_current_match_time():

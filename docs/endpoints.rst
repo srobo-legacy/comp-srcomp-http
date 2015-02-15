@@ -163,3 +163,32 @@ You can specify which matches are returned with various queries.
 
 Each parameter can be taken in the form of: ``<start>..<end>``, ``..<end>``,
 ``<start>..`` and ``<value>``.
+
+/periods
+--------
+
+Get a list of match periods. A match period is a block of time during which
+a collection of matches (of the same type) occur. For example, the first
+morning of the first day of the competition might have one period, and the
+Knockouts might be another.
+
+
+.. code-block:: json
+
+    {
+        "periods": [
+            {
+              "description": "A description of the period for humans",
+              "end_time": "...",
+              "matches": {
+                "first_num": "...",
+                "last_num": "..."
+              },
+              "max_end_time": "...",
+              "start_time": "..."
+            }
+        ]
+    }
+
+The ``matches`` field will only be present if there are matches there are
+matches in this period.
