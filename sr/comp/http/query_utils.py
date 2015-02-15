@@ -4,7 +4,7 @@ from dateutil.tz import tzlocal
 
 def match_json_info(comp, match):
     if match:
-        match_period_lengths = comp.schedule.match_period_lengths
+        match_slot_lengths = comp.schedule.match_slot_lengths
 
         info = {
             "num": match.num,
@@ -12,13 +12,13 @@ def match_json_info(comp, match):
             "teams": match.teams,
             "type": match.type.value,
             "times": {
-                "period": {
+                "slot": {
                     "start": match.start_time.isoformat(),
                     "end": match.end_time.isoformat()
                 },
                 "game": {
-                    "start": (match.start_time + match_period_lengths['pre']).isoformat(),
-                    "end": (match.start_time + match_period_lengths['pre'] + match_period_lengths['match']).isoformat()
+                    "start": (match.start_time + match_slot_lengths['pre']).isoformat(),
+                    "end": (match.start_time + match_slot_lengths['pre'] + match_slot_lengths['match']).isoformat()
                 }
             }
         }

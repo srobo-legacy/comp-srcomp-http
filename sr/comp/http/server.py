@@ -122,8 +122,8 @@ def state():
     return jsonify(state = comp.state)
 
 def get_config_dict(comp):
-    return {'match_periods': {key: int(value.total_seconds())
-                for key, value in comp.schedule.match_period_lengths.items()},
+    return {'match_slots': {key: int(value.total_seconds())
+                for key, value in comp.schedule.match_slot_lengths.items()},
             'server':
               {library: working_set.by_key[library].version
                 for library in ('sr.comp',

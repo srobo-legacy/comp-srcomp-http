@@ -125,7 +125,7 @@ Get general information about the configuration of the competition and the host.
 .. code-block:: json
 
     {
-        "match_periods": {
+        "match_slots": {
             "pre": "...",
             "match": "...",
             "post": "...",
@@ -155,11 +155,11 @@ You can specify which matches are returned with various queries.
 ``game_end_time``
     The end time of the game.
 
-``period_start_time``
-    The start time of the period.
+``slot_start_time``
+    The start time of the timeslot allocated to the game.
 
-``period_end_time``
-    The end time of the period.
+``slot_end_time``
+    The end time of the timeslot allocated to the game.
 
 Each parameter can be taken in the form of: ``<start>..<end>``, ``..<end>``,
 ``<start>..`` and ``<value>``.
