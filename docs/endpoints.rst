@@ -164,6 +164,29 @@ You can specify which matches are returned with various queries.
 Each parameter can be taken in the form of: ``<start>..<end>``, ``..<end>``,
 ``<start>..`` and ``<value>``.
 
+.. code-block:: json
+
+    {
+        "last_scored": "...",
+        "matches": [
+            "..."
+        ]
+    }
+
+``last_scored`` contains the same value as in the following endpoint.
+
+/matches/last_scored
+--------------------
+
+.. code-block:: json
+
+    {
+        "last_scored": "..."
+    }
+
+``last_scored`` contains the highest match number which has a score assigned,
+but may be ``null`` if no scores have yet been entered.
+
 /periods
 --------
 

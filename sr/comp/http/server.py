@@ -138,6 +138,11 @@ def config():
     comp = g.comp_man.get_comp()
     return jsonify(config=get_config_dict(comp))
 
+@app.route("/matches/last_scored")
+def last_scored_match():
+    comp = g.comp_man.get_comp()
+    return jsonify(last_scored=comp.scores.last_scored_match)
+
 @app.route("/matches")
 def matches():
     comp = g.comp_man.get_comp()
@@ -166,7 +171,7 @@ def matches():
             predicate = parse_difference_string(request.args[filter_key], filter_type)
             matches = [match for match in matches if predicate(filter_type(filter_value(match)))]
 
-    return jsonify(matches=matches)
+    return jsonify(matches=matches, last_scored=comp.scores.last_scored_match)
 
 @app.route("/periods")
 def match_periods():

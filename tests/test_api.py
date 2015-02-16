@@ -50,6 +50,7 @@ def test_endpoints():
         '/matches?range=0-1',
         '/matches?arenas=B&range=1',
         '/matches?type=knockout',
+        '/matches/last_scored',
         '/periods',
         '/state'
     ]
@@ -143,7 +144,12 @@ def test_matches():
                   'end':   '2014-04-26T13:04:30+01:00'
                }
             }}
-         ]})
+         ],
+         'last_scored': 99
+         })
+
+def test_last_scored():
+    eq_(server_get('/matches/last_scored'), {'last_scored': 99})
 
 @raises(APIError)
 def test_invalid_match_type():
