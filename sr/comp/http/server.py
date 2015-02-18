@@ -45,7 +45,7 @@ def root():
 
 def format_arena(arena):
     data = {'get': url_for('get_arena', name=arena.name)}
-    data.update(arena.__dict__)
+    data.update(arena._asdict())
     return data
 
 
@@ -99,7 +99,7 @@ def get_team(tla):
 
 def format_corner(corner):
     data = {'get': url_for('get_corner', number=corner.number)}
-    data.update(corner.__dict__)
+    data.update(corner._asdict())
     return data
 
 @app.route("/corners")
