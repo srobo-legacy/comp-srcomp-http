@@ -5,7 +5,7 @@ from functools import partial
 import os.path
 from pkg_resources import working_set
 
-from flask import g, Flask, jsonify, request, url_for, abort
+from flask import g, Flask, jsonify, request, url_for, abort, send_file
 
 from sr.comp.match_period import MatchType
 from sr.comp.http.manager import SRCompManager
@@ -69,12 +69,18 @@ def get_arena(name):
 def team_info(comp, team):
     scores = comp.scores.league.teams[team.tla]
     league_pos = comp.scores.league.positions[team.tla]
-    return {'name': team.name,
+    info = {'name': team.name,
             'get': url_for('get_team', tla=team.tla),
             'tla': team.tla,
             'league_pos': league_pos,
             'scores': {'league': scores.league_points,
                        'game': scores.game_points}}
+
+    if os.path.exists(os.path.join(g.comp_man.root_dir, 'teams', 'images',
+                                   '{}.png'.format(team.tla))):
+        info['image_url'] = url_for('get_team_image', tla=team.tla)
+
+    return info
 
 
 @app.route('/teams')
@@ -96,6 +102,24 @@ def get_team(tla):
     except KeyError:
         abort(404)
     return jsonify(team_info(comp, team))
+
+
+@app.route('/teams/<tla>/image')
+def get_team_image(tla):
+    comp = g.comp_man.get_comp()
+
+    try:
+        team = comp.teams[tla]
+    except KeyError:
+        abort(404)
+
+    filename = os.path.join(g.comp_man.root_dir, 'teams', 'images',
+                            '{}.png'.format(team.tla))
+    if os.path.exists(filename):
+        return send_file(filename, mimetype='image/png')
+    else:
+        abort(404)
+
 
 def format_corner(corner):
     data = {'get': url_for('get_corner', number=corner.number)}

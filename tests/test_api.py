@@ -119,6 +119,16 @@ def test_team():
                                               'game': 69},
                                    'get': '/teams/CLF'})
 
+
+def test_team_image():
+    eq_(server_get('/teams/BAY')['image_url'], '/teams/BAY/image')
+
+
+@raises(API404Error)
+def test_no_team_image():
+    server_get('/teams/BEES/image')
+
+
 @raises(API404Error)
 def test_bad_team():
     server_get('/teams/BEES')
