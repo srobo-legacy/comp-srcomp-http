@@ -16,9 +16,14 @@ def update_lock_path(compstate_path):
 def update_pls_path(compstate_path):
     return os.path.join(compstate_path, UPDATE_FILE)
 
-def acquire_lock(lock_path):
+def exclusive_lock(lock_path):
     fd = open(lock_path, "w")
     fcntl.lockf(fd, fcntl.LOCK_EX)
+    return fd
+
+def share_lock(lock_path):
+    fd = open(lock_path, "r")
+    fcntl.lockf(fd, fcntl.LOCK_SH)
     return fd
 
 def touch_update_file(compstate_path):
@@ -33,7 +38,7 @@ def update_lock(compstate_path):
         manager to re load the information it has.
     """
     lock_path = update_lock_path(compstate_path)
-    with acquire_lock(lock_path):
+    with exclusive_lock(lock_path):
         yield
         touch_update_file(compstate_path)
 
@@ -49,7 +54,7 @@ class SRCompManager(object):
 
     def _load(self):
         lock_path = update_lock_path(self.root_dir)
-        with acquire_lock(lock_path):
+        with share_lock(lock_path):
             "grab a lock & reload"
             logging.info("Loading compstate from {0}".format(self.root_dir))
             self.comp = SRComp(self.root_dir)
