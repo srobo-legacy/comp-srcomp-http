@@ -2,6 +2,22 @@
 import datetime
 from dateutil.tz import tzlocal
 
+def get_scores(scores, match):
+    k = (match.arena, match.num)
+
+    knockout = scores.knockout
+    if k in knockout.game_points:
+        return {
+            "game": knockout.game_points[k]
+        }
+
+    league = scores.league
+    if k in league.game_points:
+        return {
+            "game": league.game_points[k],
+            "league": league.ranked_points[k]
+        }
+
 def match_json_info(comp, match):
     if match:
         match_slot_lengths = comp.schedule.match_slot_lengths
@@ -23,13 +39,9 @@ def match_json_info(comp, match):
             }
         }
 
-        league = comp.scores.league
-        k = (match.arena, match.num)
-        if k in league.game_points:
-            info["scores"] = {
-                "game": league.game_points[k],
-                "league": league.ranked_points[k]
-            }
+        score_info = get_scores(comp.scores, match)
+        if score_info:
+            info['scores'] = score_info
 
         return info
     else:
