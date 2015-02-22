@@ -23,13 +23,18 @@ def match_json_info(comp, match):
             }
         }
 
-        league = comp.scores.league
         k = (match.arena, match.num)
+
+        league = comp.scores.league
         if k in league.game_points:
             info["scores"] = {
                 "game": league.game_points[k],
                 "league": league.ranked_points[k]
             }
+
+        knockout = comp.scores.knockout
+        if k in knockout.game_points:
+            info["scores"] = { "game": knockout.game_points[k] }
 
         return info
     else:
