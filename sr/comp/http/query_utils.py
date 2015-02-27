@@ -1,7 +1,4 @@
 
-import datetime
-from dateutil.tz import tzlocal
-
 def get_scores(scores, match):
     k = (match.arena, match.num)
 
