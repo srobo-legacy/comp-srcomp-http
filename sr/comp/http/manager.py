@@ -1,5 +1,6 @@
 
 import contextlib
+import errno
 import fcntl
 import logging
 import os
@@ -22,10 +23,15 @@ def exclusive_lock(lock_path):
     return fd
 
 def share_lock(lock_path):
-    if not os.path.exists(lock_path):
-        # Touch the file so it exists
-        open(lock_path, "w").close()
-    fd = open(lock_path, "r")
+    try:
+        fd = open(lock_path, "r")
+    except IOError as ioe:
+        if ioe.errno == errno.ENOENT:
+            # Touch the file so it exists
+            fd = open(lock_path, "w+")
+        else:
+            # Some other issue -- fail out
+            raise
     fcntl.lockf(fd, fcntl.LOCK_SH)
     return fd
 
