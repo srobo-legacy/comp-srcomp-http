@@ -199,7 +199,7 @@ def matches():
     ]
 
     # check for unknown filters
-    filter_names = [name for name, *_ in filters]
+    filter_names = [name for name, _, _ in filters]
     for arg in request.args:
         if arg not in filter_names:
             raise errors.UnknownMatchFilter(arg)
