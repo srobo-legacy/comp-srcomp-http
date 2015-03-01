@@ -177,12 +177,19 @@ def matches():
 
     def parse_date(string):
         if ' ' in string:
-            raise ValueError('Date string should not contain spaces. '
-                             "Did you pass in a '+'?")
-        return dateutil.parser.parse(string)
+            raise errors.BadRequest('Date string should not contain spaces. '
+                                    "Did you pass in a '+'?")
+        else:
+            return dateutil.parser.parse(string)
+
+    def parse_match_type(string):
+        try:
+            return MatchType(string)
+        except ValueError:
+            raise errors.BadRequest()
 
     filters = [
-        ('type', MatchType, lambda x: x['type']),
+        ('type', parse_match_type, lambda x: x['type']),
         ('arena', str, lambda x: x['arena']),
         ('num', int, lambda x: x['num']),
         ('game_start_time', parse_date, lambda x: x['times']['game']['start']),
