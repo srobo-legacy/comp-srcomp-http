@@ -14,6 +14,14 @@ app.config['COMPSTATE'] = COMPSTATE
 
 CLIENT = FlaskClient(app)
 
+# Work around a bug in freezegun where the timezone handling is different
+# in Python 2 than 3. From what I can tell it's the Python 3 which is wrong,
+# but it doesn't really matter; we just need to work around it.
+TZ_OFFSET = 0
+import sys
+if sys.version_info[0] == 3:
+    TZ_OFFSET = 1
+
 class APIError(Exception):
     pass
 
@@ -211,12 +219,12 @@ def test_periods():
           ]
         })
 
-@freeze_time('2014-04-26 13:01:00')  # UTC
+@freeze_time('2014-04-26 12:01:00', tz_offset=TZ_OFFSET)
 def test_current_match_time():
     eq_(server_get('/current')['time'],
         '2014-04-26T13:01:00+01:00')
 
-@freeze_time('2014-04-26 13:01:00')  # UTC
+@freeze_time('2014-04-26 12:01:00', tz_offset=TZ_OFFSET)
 def test_current_match():
     match_list = server_get('/current')['matches']
     match_list.sort(key=lambda match: match['arena'])
