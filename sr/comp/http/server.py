@@ -190,6 +190,11 @@ def matches():
         ('period_end_time', parse_date, lambda x: x['times']['period']['end'])
     ]
 
+    filter_names = [name for name, *_ in filters]
+    for arg in request.args:
+        if arg not in filter_names:
+            abort(400)
+
     for filter_key, filter_type, filter_value in filters:
         if filter_key in request.args:
             predicate = parse_difference_string(request.args[filter_key], filter_type)
