@@ -62,7 +62,7 @@ def get_arena(name):
     comp = g.comp_man.get_comp()
 
     if name not in comp.arenas:
-        return jsonify(error=True, msg="Invalid arena"), 404
+        abort(404)
 
     return jsonify(**format_arena(comp.arenas[name]))
 
@@ -138,7 +138,7 @@ def get_corner(number):
     comp = g.comp_man.get_comp()
 
     if number not in comp.corners:
-        return jsonify(error=True,msg="Invalid corner"), 404
+        abort(404)
 
     return jsonify(**format_corner(comp.corners[number]))
 
