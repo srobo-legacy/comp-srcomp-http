@@ -187,15 +187,17 @@ def matches():
         ('num', int, lambda x: x['num']),
         ('game_start_time', parse_date, lambda x: x['times']['game']['start']),
         ('game_end_time', parse_date, lambda x: x['times']['game']['end']),
-        ('period_start_time', parse_date, lambda x: x['times']['period']['start']),
-        ('period_end_time', parse_date, lambda x: x['times']['period']['end'])
+        ('slot_start_time', parse_date, lambda x: x['times']['slot']['start']),
+        ('slot_end_time', parse_date, lambda x: x['times']['slot']['end'])
     ]
 
+    # check for unknown filters
     filter_names = [name for name, *_ in filters]
     for arg in request.args:
         if arg not in filter_names:
             raise errors.UnknownMatchFilter(arg)
 
+    # actually run the filters
     for filter_key, filter_type, filter_value in filters:
         if filter_key in request.args:
             predicate = parse_difference_string(request.args[filter_key], filter_type)
