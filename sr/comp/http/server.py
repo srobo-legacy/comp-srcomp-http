@@ -8,6 +8,7 @@ from pkg_resources import working_set
 from flask import g, Flask, jsonify, request, url_for, abort, send_file
 
 from sr.comp.match_period import MatchType
+from sr.comp.http import errors
 from sr.comp.http.manager import SRCompManager
 from sr.comp.http.json import JsonEncoder
 from sr.comp.http.query_utils import match_json_info, parse_difference_string
@@ -193,7 +194,7 @@ def matches():
     filter_names = [name for name, *_ in filters]
     for arg in request.args:
         if arg not in filter_names:
-            abort(400)
+            raise errors.UnknownMatchFilter(arg)
 
     for filter_key, filter_type, filter_value in filters:
         if filter_key in request.args:
