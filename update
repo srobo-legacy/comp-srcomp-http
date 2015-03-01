@@ -20,7 +20,4 @@ check_call("git remote -v", shell=True, cwd=args.compstate)
 check_call("git fetch origin", shell=True, cwd=args.compstate)
 
 with update_lock(args.compstate):
-    output = check_output("git checkout origin/master", shell=True, cwd=args.compstate)
-
-rev = output.splitlines()[-1]
-print(rev)
+    check_call("git checkout origin/master", shell=True, cwd=args.compstate)
