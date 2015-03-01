@@ -22,6 +22,9 @@ def exclusive_lock(lock_path):
     return fd
 
 def share_lock(lock_path):
+    if not os.path.exists(lock_path):
+        # Touch the file so it exists
+        open(lock_path, "w").close()
     fd = open(lock_path, "r")
     fcntl.lockf(fd, fcntl.LOCK_SH)
     return fd
