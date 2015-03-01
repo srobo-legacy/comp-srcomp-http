@@ -516,4 +516,24 @@ def test_knockouts():
                        'slot': {'end': '2014-04-27T17:30:00+01:00',
                                 'start': '2014-04-27T17:25:00+01:00'}},
              'type': 'knockout'}]]
-    eq_(server_get('knockout')['rounds'], ref)
+    actual_rounds = server_get('knockout')['rounds']
+
+    # Our own assertion since the built-in ones don't cope with such a
+    # large structure very well (ie, the failure output sucks)
+    for r_num, matches in enumerate(ref):
+
+        assert r_num < len(actual_rounds), "Failed to get round '{0}' from server".format(r_num)
+
+        actual_matches = actual_rounds[r_num]
+
+        for m_num, match in enumerate(matches):
+
+            assert m_num < len(actual_matches), \
+                "Failed to get match '{0}' within round '{1}' from server".format(m_num, r_num)
+
+            actual_match = actual_matches[m_num]
+
+            assert match == actual_match, "Round: {0}, match: {1}".format(r_num, m_num)
+
+    # Just in case the above is faulty
+    eq_(actual_rounds, ref)
