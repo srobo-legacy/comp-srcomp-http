@@ -1,13 +1,15 @@
 from __future__ import print_function
 
+from functools import wraps
 import json
 import os.path
-from flask.testing import FlaskClient
 
+from flask.testing import FlaskClient
 from freezegun import freeze_time
 from nose.tools import eq_, raises
 
 from sr.comp.http import app
+
 
 COMPSTATE = os.path.join(os.path.dirname(__file__), 'dummy')
 app.config['COMPSTATE'] = COMPSTATE
@@ -22,22 +24,44 @@ import sys
 if sys.version_info[0] == 3:
     TZ_OFFSET = 1
 
-class APIError(Exception):
-    pass
 
-class API404Error(Exception):
-    pass
+class ApiError(Exception):
+    def __init__(self, name, code):
+        self.name = name
+        self.code = code
+
+
+def raises_api_error(name, code):
+    def decorator(f):
+        @wraps(f)
+        def wrapper(*args, **kwargs):
+            try:
+                f(*args, **kwargs)
+            except ApiError as e:
+                assert e.name == name
+                assert e.code == code
+            except:
+                raise
+            else:
+                raise AssertionError('Did not raise API error.')
+        return wrapper
+    return decorator
+
 
 def server_get(endpoint):
     response, code, header = CLIENT.get(endpoint)
-    response_code = int(code.split(' ')[0])
-    response_data = b''.join(response)
-    if response_code == 200:
-        return json.loads(response_data.decode('utf-8'))
-    elif response_code == 404:
-        raise API404Error()
+    json_response = json.loads(b''.join(response).decode('UTF-8'))
+    code = int(code.split(' ')[0])
+
+    if 200 <= code <= 299:
+        return json_response
+    elif 400 <= code <= 499:
+        assert json_response['error']['code'] == code
+        error = json_response['error']
+        raise ApiError(error['name'], error['code'])
     else:
-        raise APIError('Returned status {}'.format(response_code))
+        raise AssertionError()  # server error
+
 
 def test_endpoints():
     endpoints = [
@@ -77,19 +101,22 @@ def test_root():
                           'current': '/current',
                           'knockout': '/knockout'})
 
+
 def test_state():
     state_val = server_get('/state')['state']
     unicode = type(u'') # Python 2/3 hack
     assert isinstance(state_val, unicode), repr(state_val)
+
 
 def test_corner():
     eq_(server_get('/corners/0'), {'get': '/corners/0',
                                    'number': 0,
                                    'colour': '#00ff00'})
 
-@raises(API404Error)
+@raises_api_error('NotFound', 404)
 def test_invalid_corner():
     server_get('/corners/12')
+
 
 def test_config():
     cfg = server_get('/config')['config']
@@ -98,15 +125,18 @@ def test_config():
                              'post': 30,
                              'total': 300})
 
+
 def test_arena():
     eq_(server_get('/arenas/A'), {'get': '/arenas/A',
                                   'name': 'A',
                                   'colour': '#ff0000',
                                   'display_name': 'A'})
 
-@raises(API404Error)
+
+@raises_api_error('NotFound', 404)
 def test_invalid_arena():
     server_get('/arenas/Z')
+
 
 def test_arenas():
     eq_(server_get('/arenas')['arenas'],
@@ -118,6 +148,7 @@ def test_arenas():
                  'name': 'B',
                  'colour': '#00ff00',
                  'display_name': 'B'}})
+
 
 def test_team():
     eq_(server_get('/teams/CLF'), {'tla': 'CLF',
@@ -132,14 +163,15 @@ def test_team_image():
     eq_(server_get('/teams/BAY')['image_url'], '/teams/BAY/image')
 
 
-@raises(API404Error)
+@raises_api_error('NotFound', 404)
 def test_no_team_image():
     server_get('/teams/BEES/image')
 
 
-@raises(API404Error)
+@raises_api_error('NotFound', 404)
 def test_bad_team():
     server_get('/teams/BEES')
+
 
 def test_matches():
     eq_(server_get('/matches?num=0&arena=A'),
@@ -166,12 +198,21 @@ def test_matches():
          'last_scored': 99
          })
 
+
+@raises_api_error('UnknownMatchFilter', 400)
+def test_invalid_match_filter():
+    res = server_get('/matches?number=0&arena=A')
+    print(res)
+
+
 def test_last_scored():
     eq_(server_get('/matches/last_scored'), {'last_scored': 99})
 
-@raises(APIError)
+
+@raises_api_error('BadRequest', 400)
 def test_invalid_match_type():
     server_get('/matches?type=bees')
+
 
 def test_periods():
     eq_(server_get('/periods'),
@@ -219,10 +260,12 @@ def test_periods():
           ]
         })
 
+
 @freeze_time('2014-04-26 12:01:00', tz_offset=TZ_OFFSET)
 def test_current_match_time():
     eq_(server_get('/current')['time'],
         '2014-04-26T13:01:00+01:00')
+
 
 @freeze_time('2014-04-26 12:01:00', tz_offset=TZ_OFFSET)
 def test_current_match():
@@ -265,6 +308,7 @@ def test_current_match():
                }
             }}]
     eq_(match_list, ref)
+
 
 def test_knockouts():
     import pprint
