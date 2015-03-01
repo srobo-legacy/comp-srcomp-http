@@ -238,3 +238,24 @@ def current_state():
 def knockout():
     comp = g.comp_man.get_comp()
     return jsonify(rounds=comp.schedule.knockout_rounds)
+
+
+def error_handler(e):
+    # fill up the error object with a name, description, code and details
+    error = {
+        'name': type(e).__name__,
+        'description': e.description,
+        'code': e.code
+    }
+
+    # not all errors will have details
+    try:
+        error['details'] = e.details
+    except AttributeError:
+        pass
+
+    return jsonify(error=error), e.code
+
+
+for code in range(400, 499):
+    app.errorhandler(code)(error_handler)
