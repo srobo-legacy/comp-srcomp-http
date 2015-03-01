@@ -8,8 +8,14 @@ from subprocess import check_call, check_output
 
 from sr.comp.http.manager import update_lock
 
+DEFAULT_REVISION = 'origin/master'
+
 parser = argparse.ArgumentParser(description = "Update the given compstate repo in a safe manner")
 parser.add_argument("compstate", help = "Competition state git repository path")
+parser.add_argument("revision",
+                    default = DEFAULT_REVISION,
+                    nargs = '?',
+                    help = "Target revision to update to (default: {})".format(DEFAULT_REVISION))
 
 args = parser.parse_args()
 
@@ -19,5 +25,8 @@ check_call("git remote -v", shell=True, cwd=args.compstate)
 # Fetch first, don't need to lock for this bit
 check_call("git fetch origin", shell=True, cwd=args.compstate)
 
+# Ensure the revision exists (hide successful output)
+check_output(['git', 'rev-parse', args.revision], cwd=args.compstate)
+
 with update_lock(args.compstate):
-    check_call("git checkout origin/master", shell=True, cwd=args.compstate)
+    check_call(['git', 'checkout', args.revision], cwd=args.compstate)
