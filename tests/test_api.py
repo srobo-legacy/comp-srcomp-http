@@ -201,8 +201,7 @@ def test_matches():
 
 @raises_api_error('UnknownMatchFilter', 400)
 def test_invalid_match_filter():
-    res = server_get('/matches?number=0&arena=A')
-    print(res)
+    server_get('/matches?number=0&arena=A')
 
 
 def test_last_scored():
