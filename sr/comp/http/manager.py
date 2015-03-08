@@ -43,8 +43,9 @@ def touch_update_file(compstate_path):
 def update_lock(compstate_path):
     """ Acquire a lock on the given compstate for the purposes of
         updating it. Returns a context manager object which will remove
-        the lock and file when __exit__ed. In turn that triggers the
-        manager to re load the information it has.
+        the lock when __exit__ed and, if a clean exit, touch the update
+        file. In turn that triggers the manager to re load the information
+        it has.
     """
     lock_path = update_lock_path(compstate_path)
     with exclusive_lock(lock_path):
