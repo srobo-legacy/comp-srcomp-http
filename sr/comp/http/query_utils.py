@@ -21,6 +21,7 @@ def match_json_info(comp, match):
 
         info = {
             "num": match.num,
+            'display_name': match.display_name,
             "arena": match.arena,
             "teams": match.teams,
             "type": match.type.value,
