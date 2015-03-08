@@ -23,7 +23,8 @@ def build_scores():
 
 def build_match(num, arena, teams = None, start_time = None, \
                 end_time = None, type_ = None):
-    return Match(num, arena, teams, start_time, end_time, type_)
+    return Match(num, 'Match {n}'.format(n=num), arena, teams,
+                 start_time, end_time, type_)
 
 def test_league_match():
     scores = build_scores()
