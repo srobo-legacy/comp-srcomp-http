@@ -32,40 +32,34 @@ def match_json_info(comp, match):
     :param sr.comp.match_periods.Match: A match.
     :return: A :class:`dict` containing JSON suitable output.
     """
-    if match:
-        match_slot_lengths = comp.schedule.match_slot_lengths
+    match_slot_lengths = comp.schedule.match_slot_lengths
 
-        info = {
-            "num": match.num,
-            'display_name': match.display_name,
-            "arena": match.arena,
-            "teams": match.teams,
-            "type": match.type.value,
-            "times": {
-                "slot": {
-                    "start": match.start_time.isoformat(),
-                    "end": match.end_time.isoformat()
-                },
-                "game": {
-                    "start": (match.start_time +
-                              match_slot_lengths['pre']).isoformat(),
-                    "end": (match.start_time +
-                            match_slot_lengths['pre'] +
-                            match_slot_lengths['match']).isoformat()
-                }
+    info = {
+        "num": match.num,
+        'display_name': match.display_name,
+        "arena": match.arena,
+        "teams": match.teams,
+        "type": match.type.value,
+        "times": {
+            "slot": {
+                "start": match.start_time.isoformat(),
+                "end": match.end_time.isoformat()
+            },
+            "game": {
+                "start": (match.start_time +
+                          match_slot_lengths['pre']).isoformat(),
+                "end": (match.start_time +
+                        match_slot_lengths['pre'] +
+                        match_slot_lengths['match']).isoformat()
             }
         }
+    }
 
-        score_info = get_scores(comp.scores, match)
-        if score_info:
-            info['scores'] = score_info
+    score_info = get_scores(comp.scores, match)
+    if score_info:
+        info['scores'] = score_info
 
-        return info
-    else:
-        return {
-            "error": True,
-            "msg": "No match at this time."
-        }
+    return info
 
 
 def parse_difference_string(string, type_converter=int):
