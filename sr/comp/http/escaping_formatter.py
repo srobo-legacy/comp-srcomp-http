@@ -3,6 +3,8 @@ import logging
 
 
 class EscapingFormatter(logging.Formatter):
+    """A class that formats log output nicely."""
+
     def __init__(self, *args, **kwargs):
         super(EscapingFormatter, self).__init__(*args, **kwargs)
 

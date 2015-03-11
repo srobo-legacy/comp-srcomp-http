@@ -1,3 +1,5 @@
+"""JSON formatting routines."""
+
 from enum import Enum
 
 from flask import g
@@ -9,6 +11,7 @@ from sr.comp.http.query_utils import match_json_info
 
 class JsonEncoder(flask.json.JSONEncoder):
     """A JSON encoder that deals with various types used in SRComp."""
+
     def __init__(self, *args, **kwargs):
         # The following is required because the default JSON encoder does
         # stuff with these types. We can put them back in manually ourselves

@@ -1,5 +1,13 @@
+"""Various utils for working with HTTP."""
 
 def get_scores(scores, match):
+    """
+    Get a scores object suitable for JSON output.
+
+    :param sr.comp.scores.Scores scores: The competition scores.
+    :param sr.comp.match_period.Match: A match.
+    :return: :class:`dict` suitable for JSON output.
+    """
     k = (match.arena, match.num)
 
     knockout = scores.knockout
@@ -17,6 +25,13 @@ def get_scores(scores, match):
 
 
 def match_json_info(comp, match):
+    """
+    Get match JSON information.
+
+    :param sr.comp.comp.SRComp comp: A competition instance.
+    :param sr.comp.match_periods.Match: A match.
+    :return: A :class:`dict` containing JSON suitable output.
+    """
     if match:
         match_slot_lengths = comp.schedule.match_slot_lengths
 

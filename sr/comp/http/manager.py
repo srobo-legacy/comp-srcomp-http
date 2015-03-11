@@ -1,3 +1,4 @@
+"""Routines for managing a Compstate instance."""
 
 import contextlib
 import errno
@@ -48,12 +49,14 @@ def touch_update_file(compstate_path):
 
 @contextlib.contextmanager
 def update_lock(compstate_path):
-    """ Acquire a lock on the given compstate for the purposes of
-        updating it. Returns a context manager object which will remove
-        the lock when __exit__ed and, if a clean exit, touch the update
-        file. In turn that triggers the manager to re load the information
-        it has.
     """
+    Acquire a lock on the given compstate for the purposes of updating it.
+
+    :return: A context manager object which will remove the lock when
+             __exit__ed and, if a clean exit, touch the update file. In turn
+             that triggers the manager to re load the information it has.
+    """
+
     lock_path = update_lock_path(compstate_path)
     with exclusive_lock(lock_path):
         yield
@@ -61,14 +64,16 @@ def update_lock(compstate_path):
 
 
 class SRCompManager(object):
+    """An ``SRComp`` manager."""
+
     def __init__(self):
         self.root_dir = "./"
 
-        # The last time we updated our information
         self.update_time = None
+        """The last time we updated our information."""
 
-        # The time the update pls file was last modified
         self._update_pls_time = None
+        """The time the update pls file was last modified."""
 
     def _load(self):
         lock_path = update_lock_path(self.root_dir)

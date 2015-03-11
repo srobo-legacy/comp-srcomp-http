@@ -14,10 +14,26 @@ Configuration
     :undoc-members:
     :show-inheritance:
 
+Errors
+------
+
+.. automodule:: sr.comp.http.errors
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 Escaping Formatter
 ------------------
 
 .. automodule:: sr.comp.http.escaping_formatter
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+JSON
+----
+
+.. automodule:: sr.comp.http.json
     :members:
     :undoc-members:
     :show-inheritance:
