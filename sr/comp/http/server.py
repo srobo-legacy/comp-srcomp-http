@@ -199,7 +199,7 @@ def matches():
     ]
 
     # check for unknown filters
-    filter_names = [name for name, _, _ in filters]
+    filter_names = [name for name, _, _ in filters] + ['limit']
     for arg in request.args:
         if arg not in filter_names:
             raise errors.UnknownMatchFilter(arg)
@@ -209,6 +209,24 @@ def matches():
         if filter_key in request.args:
             predicate = parse_difference_string(request.args[filter_key], filter_type)
             matches = [match for match in matches if predicate(filter_type(filter_value(match)))]
+
+    # limit the results
+    try:
+        limit = int(request.args['limit'])
+    except KeyError:
+        pass
+    except ValueError:
+        raise errors.BadRequest(
+            'Limit must be a positive or negative integer.')
+    else:
+        if limit == 0:
+            matches = []
+        elif limit > 0:
+            matches = matches[:limit]
+        elif limit < 0:
+            matches = matches[limit:]
+        else:
+            raise AssertionError("Limit isn't a number?")
 
     return jsonify(matches=matches, last_scored=comp.scores.last_scored_match)
 

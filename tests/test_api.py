@@ -82,6 +82,7 @@ def test_endpoints():
         '/matches?num=0..1',
         '/matches?arena=B&num=1',
         '/matches?type=knockout',
+        '/matches?type=league&limit=10',
         '/matches/last_scored',
         '/periods',
         '/state'
@@ -198,6 +199,58 @@ def test_matches():
          ],
          'last_scored': 99
          })
+
+
+def test_match_forwards_limit():
+    eq_(server_get('/matches?arena=A&limit=1'),
+        {'matches': [
+            {
+                'num': 0,
+                'display_name': 'Match 0',
+                'arena': 'A',
+                'type': 'league',
+                'teams': [None, 'CLY', 'TTN', None],
+                'scores': {
+                    'game': {'CLY': 9, 'TTN': 6},
+                    'league': {'CLY': 8, 'TTN': 6}
+                    },
+                'times': {
+                    'slot': {
+                        'start': '2014-04-26T13:00:00+01:00',
+                        'end':   '2014-04-26T13:05:00+01:00'
+                    },
+                    'game': {
+                        'start': '2014-04-26T13:01:30+01:00',
+                        'end':   '2014-04-26T13:04:30+01:00'
+                    }
+                }
+            }
+        ],
+        'last_scored': 99})
+
+
+def test_match_backwards_limit():
+    eq_(server_get('/matches?arena=A&limit=-1'),
+        {'matches': [
+            {
+                'display_name': 'Final (#129)',
+                'type': 'knockout',
+                'num': 129,
+                'arena': 'A',
+                'times': {
+                    'game': {
+                        'end': '2014-04-27T17:29:30+01:00',
+                        'start': '2014-04-27T17:26:30+01:00'
+                    },
+                    'slot': {
+                        'end': '2014-04-27T17:30:00+01:00',
+                        'start': '2014-04-27T17:25:00+01:00'
+                    }
+                },
+                'teams': ['???', '???', '???', '???']
+            }
+        ],
+        'last_scored': 99})
 
 
 @raises_api_error('UnknownMatchFilter', 400)

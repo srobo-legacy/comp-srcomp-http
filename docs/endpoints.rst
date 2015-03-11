@@ -164,6 +164,11 @@ You can specify which matches are returned with various queries.
 Each parameter can be taken in the form of: ``<start>..<end>``, ``..<end>``,
 ``<start>..`` and ``<value>``.
 
+You can also limit the number of matches returned by passing a value to the
+``limit`` query parameter. This can be both a postive and negative integer.
+Positive limits start from the first match and work forwards, whilst negative
+limits start from the last match and work backwards.
+
 .. code-block:: json
 
     {
