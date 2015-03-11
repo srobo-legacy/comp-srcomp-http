@@ -1,6 +1,7 @@
 
 import logging
 
+
 class EscapingFormatter(logging.Formatter):
     def __init__(self, *args, **kwargs):
         super(EscapingFormatter, self).__init__(*args, **kwargs)

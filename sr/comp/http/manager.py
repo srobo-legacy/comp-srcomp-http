@@ -8,19 +8,24 @@ import time
 
 from sr.comp.comp import SRComp
 
+
 LOCK_FILE = ".update-lock"
 UPDATE_FILE = ".update-pls"
+
 
 def update_lock_path(compstate_path):
     return os.path.join(compstate_path, LOCK_FILE)
 
+
 def update_pls_path(compstate_path):
     return os.path.join(compstate_path, UPDATE_FILE)
+
 
 def exclusive_lock(lock_path):
     fd = open(lock_path, "w")
     fcntl.lockf(fd, fcntl.LOCK_EX)
     return fd
+
 
 def share_lock(lock_path):
     try:
@@ -35,9 +40,11 @@ def share_lock(lock_path):
     fcntl.lockf(fd, fcntl.LOCK_SH)
     return fd
 
+
 def touch_update_file(compstate_path):
     file_path = update_pls_path(compstate_path)
     open(file_path, 'w').close()
+
 
 @contextlib.contextmanager
 def update_lock(compstate_path):
@@ -51,6 +58,7 @@ def update_lock(compstate_path):
     with exclusive_lock(lock_path):
         yield
         touch_update_file(compstate_path)
+
 
 class SRCompManager(object):
     def __init__(self):
@@ -90,7 +98,7 @@ class SRCompManager(object):
             self._load()
 
         elif time.time() - self.update_time > 5 and self._state_changed():
-            "Data is more than 5 seconds old and the state has changed -- reload"
+            # data is more than 5 seconds old and the state has changed, reload
             self._load()
 
         return self.comp

@@ -19,17 +19,20 @@ app.json_encoder = JsonEncoder
 
 comp_man = SRCompManager()
 
+
 @app.before_request
 def before_request():
     if "COMPSTATE" in app.config:
         comp_man.root_dir = os.path.realpath(app.config["COMPSTATE"])
     g.comp_man = comp_man
 
+
 @app.after_request
 def after_request(resp):
     if 'Origin' in request.headers:
         resp.headers['Access-Control-Allow-Origin'] = '*'
     return resp
+
 
 @app.route('/')
 def root():
@@ -54,7 +57,7 @@ def format_arena(arena):
 def arenas():
     comp = g.comp_man.get_comp()
     return jsonify(arenas={name: format_arena(arena)
-                              for name, arena in comp.arenas.items()})
+                           for name, arena in comp.arenas.items()})
 
 
 @app.route('/arenas/<name>')
@@ -94,6 +97,7 @@ def teams():
 
     return jsonify(teams=resp)
 
+
 @app.route('/teams/<tla>')
 def get_team(tla):
     comp = g.comp_man.get_comp()
@@ -127,11 +131,13 @@ def format_corner(corner):
     data.update(corner._asdict())
     return data
 
+
 @app.route("/corners")
 def corners():
     comp = g.comp_man.get_comp()
     return jsonify(corners={number: format_corner(corner)
-                              for number, corner in comp.corners.items()})
+                            for number, corner in comp.corners.items()})
+
 
 @app.route("/corners/<int:number>")
 def get_corner(number):
@@ -142,38 +148,42 @@ def get_corner(number):
 
     return jsonify(**format_corner(comp.corners[number]))
 
+
 @app.route("/state")
 def state():
     comp = g.comp_man.get_comp()
-    return jsonify(state = comp.state)
+    return jsonify(state=comp.state)
+
 
 def get_config_dict(comp):
-    return {'match_slots': {key: int(value.total_seconds())
-                for key, value in comp.schedule.match_slot_lengths.items()},
-            'server':
-              {library: working_set.by_key[library].version
-                for library in ('sr.comp',
-                                'sr.comp.http',
-                                'sr.comp.ranker',
-                                'flask')}
-            }
+    return {
+        'match_slots': {k: int(v.total_seconds())
+                        for k, v in comp.schedule.match_slot_lengths.items()},
+        'server': {library: working_set.by_key[library].version
+                   for library in ('sr.comp', 'sr.comp.http', 'sr.comp.ranker',
+                                   'flask')}
+    }
+
 
 @app.route("/config")
 def config():
     comp = g.comp_man.get_comp()
     return jsonify(config=get_config_dict(comp))
 
+
 @app.route("/matches/last_scored")
 def last_scored_match():
     comp = g.comp_man.get_comp()
     return jsonify(last_scored=comp.scores.last_scored_match)
+
 
 @app.route("/matches")
 def matches():
     comp = g.comp_man.get_comp()
     matches = []
     for slots in comp.schedule.matches:
-        matches.extend(match_json_info(comp, match) for match in slots.values())
+        matches.extend(match_json_info(comp, match)
+                       for match in slots.values())
 
     def parse_date(string):
         if ' ' in string:
@@ -207,8 +217,10 @@ def matches():
     # actually run the filters
     for filter_key, filter_type, filter_value in filters:
         if filter_key in request.args:
-            predicate = parse_difference_string(request.args[filter_key], filter_type)
-            matches = [match for match in matches if predicate(filter_type(filter_value(match)))]
+            predicate = parse_difference_string(request.args[filter_key],
+                                                filter_type)
+            matches = [match for match in matches
+                       if predicate(filter_type(filter_value(match)))]
 
     # limit the results
     try:
@@ -230,6 +242,7 @@ def matches():
 
     return jsonify(matches=matches, last_scored=comp.scores.last_scored_match)
 
+
 @app.route("/periods")
 def match_periods():
     comp = g.comp_man.get_comp()
@@ -250,6 +263,7 @@ def match_periods():
         periods.append(data)
 
     return jsonify(periods=periods)
+
 
 @app.route("/current")
 def current_state():

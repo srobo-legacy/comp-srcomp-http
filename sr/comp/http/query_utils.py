@@ -15,6 +15,7 @@ def get_scores(scores, match):
             "league": league.ranked_points[k]
         }
 
+
 def match_json_info(comp, match):
     if match:
         match_slot_lengths = comp.schedule.match_slot_lengths
@@ -31,8 +32,11 @@ def match_json_info(comp, match):
                     "end": match.end_time.isoformat()
                 },
                 "game": {
-                    "start": (match.start_time + match_slot_lengths['pre']).isoformat(),
-                    "end": (match.start_time + match_slot_lengths['pre'] + match_slot_lengths['match']).isoformat()
+                    "start": (match.start_time +
+                              match_slot_lengths['pre']).isoformat(),
+                    "end": (match.start_time +
+                            match_slot_lengths['pre'] +
+                            match_slot_lengths['match']).isoformat()
                 }
             }
         }
@@ -47,6 +51,7 @@ def match_json_info(comp, match):
             "error": True,
             "msg": "No match at this time."
         }
+
 
 def parse_difference_string(string, type_converter=int):
     """
