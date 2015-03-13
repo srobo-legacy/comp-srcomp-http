@@ -78,6 +78,11 @@ Get information about a team.
         }
     }
 
+/teams/ ``tla`` /image
+----------------------
+
+Get the team image.
+
 /corners
 --------
 
