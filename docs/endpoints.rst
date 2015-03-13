@@ -172,13 +172,46 @@ limits start from the last match and work backwards.
 .. code-block:: json
 
     {
-        "last_scored": "...",
+        "last_scored": ...,
         "matches": [
-            "..."
+            {
+                "arena": "...",
+                "display_name": "Match ...",
+                "num": ...,
+                "scores": {
+                    "game": {
+                        "...": ...,
+                        "...": ...,
+                        "...": ...,
+                        "...": ...
+                    },
+                    "league": {
+                        "...": ...,
+                        "...": ...,
+                        "...": ...,
+                        "...": ...
+                    }
+                },
+                "teams": [
+                    "...", "...", "...", "..."
+                ],
+                "times": {
+                    "game": {
+                        "end": "...",
+                        "start": "..."
+                    },
+                    "slot": {
+                        "end": "...",
+                        "start": "..."
+                    }
+                },
+                "type": "..."
+            }
         ]
     }
 
 ``last_scored`` contains the same value as in the following endpoint.
+Any dates are in ISO 8601 format.
 
 /matches/last_scored
 --------------------
@@ -186,7 +219,7 @@ limits start from the last match and work backwards.
 .. code-block:: json
 
     {
-        "last_scored": "..."
+        "last_scored": ...
     }
 
 ``last_scored`` contains the highest match number which has a score assigned,
