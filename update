@@ -17,14 +17,17 @@ parser.add_argument("revision",
 
 args = parser.parse_args()
 
+compstate = args.compstate
+revision = args.revision
+
 # Provide information about where the remotes are
-check_call("git remote -v", shell=True, cwd=args.compstate)
+check_call("git remote -v", shell=True, cwd=compstate)
 
 # Fetch first, don't need to lock for this bit
-check_call("git fetch origin", shell=True, cwd=args.compstate)
+check_call("git fetch origin", shell=True, cwd=compstate)
 
 # Ensure the revision exists (hide successful output)
-check_output(['git', 'rev-parse', args.revision], cwd=args.compstate)
+check_output(['git', 'rev-parse', revision], cwd=compstate)
 
 with update_lock(args.compstate):
-    check_call(['git', 'checkout', args.revision], cwd=args.compstate)
+    check_call(['git', 'checkout', revision], cwd=compstate)
