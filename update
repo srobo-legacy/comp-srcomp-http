@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+"""Update the given compstate repo in a safe manner."""
 
 import argparse
 from subprocess import check_call, check_output
@@ -8,12 +9,13 @@ from sr.comp.http.manager import update_lock
 
 DEFAULT_REVISION = 'origin/master'
 
-parser = argparse.ArgumentParser(description = "Update the given compstate repo in a safe manner")
+parser = argparse.ArgumentParser(description = __doc__)
 parser.add_argument("compstate", help = "Competition state git repository path")
+rev_help = "Target revision to update to (default: {})".format(DEFAULT_REVISION)
 parser.add_argument("revision",
                     default = DEFAULT_REVISION,
                     nargs = '?',
-                    help = "Target revision to update to (default: {})".format(DEFAULT_REVISION))
+                    help = rev_help)
 
 args = parser.parse_args()
 
