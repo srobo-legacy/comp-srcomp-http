@@ -22,5 +22,10 @@ setup(name='sr.comp.http',
                         'python-dateutil >=2.2, <3'],
       setup_requires=['nose >=1.3, <2',
                       'Sphinx >=1.2, <2'],
+      entry_points={
+          'console_scripts': [
+              'srcomp-update = sr.comp.http.update:main'
+          ]
+      },
       tests_require=['freezegun >=0.2.8, <0.4'],
       test_suite='nose.collector')
