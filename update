@@ -2,11 +2,14 @@
 
 """Update the given compstate repo in a safe manner."""
 
-from subprocess import check_call, check_output
+from sr.comp.raw_compstate import RawCompstate
 
 from sr.comp.http.manager import update_lock
 
 DEFAULT_REVISION = 'origin/master'
+BOLD = '\033[1m'
+FAIL = '\033[91m'
+ENDC = '\033[0m'
 
 def add_arguments(parser):
     parser.add_argument("compstate", help = "Competition state git repository path")
@@ -17,20 +20,22 @@ def add_arguments(parser):
                         help = rev_help)
 
 def run_update(args):
-    compstate = args.compstate
+    compstate = RawCompstate(args.compstate, local_only=True)
     revision = args.revision
 
     # Provide information about where the remotes are
-    check_call("git remote -v", shell=True, cwd=args.compstate)
+    compstate.show_remotes()
 
     # Fetch first, don't need to lock for this bit
-    check_call("git fetch origin", shell=True, cwd=compstate)
+    compstate.fetch()
 
-    # Ensure the revision exists (hide successful output)
-    check_output(['git', 'rev-parse', revision], cwd=compstate)
+    # Ensure the revision exists
+    if not compstate.has_commit(revision):
+        msg = "Cannot update to unknown revision '{0}'".format(revision)
+        exit(BOLD + FAIL + msg + ENDC)
 
     with update_lock(args.compstate):
-        check_call(['git', 'checkout', revision], cwd=compstate)
+        compstate.checkout(revision)
 
 def main():
     import argparse
