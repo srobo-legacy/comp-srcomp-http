@@ -161,7 +161,8 @@ def get_config_dict(comp):
                         for k, v in comp.schedule.match_slot_lengths.items()},
         'server': {library: working_set.by_key[library].version
                    for library in ('sr.comp', 'sr.comp.http', 'sr.comp.ranker',
-                                   'flask')}
+                                   'flask')},
+        'ping_period': 10
     }
 
 
