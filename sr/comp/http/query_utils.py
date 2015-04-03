@@ -18,17 +18,26 @@ def get_scores(scores, match):
     """
     k = (match.arena, match.num)
 
+    def degroup(grouped_positions):
+        positions = {}
+        for pos, teams in grouped_positions.items():
+            for tla in teams:
+                positions[tla] = pos
+        return positions
+
     knockout = scores.knockout
     if k in knockout.game_points:
         return {
-            "game": knockout.game_points[k]
+            "game": knockout.game_points[k],
+            "ranking": degroup(knockout.game_positions[k]),
         }
 
     league = scores.league
     if k in league.game_points:
         return {
             "game": league.game_points[k],
-            "league": league.ranked_points[k]
+            "league": league.ranked_points[k],
+            "ranking": degroup(league.game_positions[k]),
         }
 
     return None

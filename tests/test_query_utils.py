@@ -11,7 +11,7 @@ def make_session_scores(arena, num):
     key = (arena, num)
     scores = mock.Mock()
     scores.game_points = {key: GAME_POINTS_DUMMY + str(key)}
-    scores.game_positions = {key: POSITIONS_DUMMY + str(key)}
+    scores.game_positions = {key: {num: [POSITIONS_DUMMY + repr(arena)]}}
     scores.ranked_points = {key: RANKED_DUMMY + str(key)}
     return scores
 
@@ -31,7 +31,8 @@ def test_league_match():
     info = get_scores(scores, build_match(num=0, arena='A'))
     expected = {
         "game": GAME_POINTS_DUMMY + "('A', 0)",
-        "league": RANKED_DUMMY + "('A', 0)"
+        "league": RANKED_DUMMY + "('A', 0)",
+        "ranking": { POSITIONS_DUMMY + "'A'": 0 },
     }
     assert expected == info
 
@@ -39,7 +40,8 @@ def test_knockout_match():
     scores = build_scores()
     info = get_scores(scores, build_match(num=1, arena='A'))
     expected = {
-        "game": GAME_POINTS_DUMMY + "('A', 1)"
+        "game": GAME_POINTS_DUMMY + "('A', 1)",
+        "ranking": { POSITIONS_DUMMY + "'A'": 1 },
     }
     assert expected == info
 

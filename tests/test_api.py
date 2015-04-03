@@ -184,7 +184,8 @@ def test_matches():
             'teams': [None, 'CLY', 'TTN', None],
             'scores': {
                'game': {'CLY': 9, 'TTN': 6},
-               'league': {'CLY': 8, 'TTN': 6}
+               'league': {'CLY': 8, 'TTN': 6},
+               'ranking': {'CLY': 1, 'TTN': 2},
             },
             'times': {
                'slot': {
@@ -212,7 +213,8 @@ def test_match_forwards_limit():
                 'teams': [None, 'CLY', 'TTN', None],
                 'scores': {
                     'game': {'CLY': 9, 'TTN': 6},
-                    'league': {'CLY': 8, 'TTN': 6}
+                    'league': {'CLY': 8, 'TTN': 6},
+                    'ranking': {'CLY': 1, 'TTN': 2},
                     },
                 'times': {
                     'slot': {
@@ -332,6 +334,7 @@ def test_current_match():
             'scores': {
                'game': {'CLY': 9, 'TTN': 6},
                'league': {'CLY': 8, 'TTN': 6},
+               'ranking': {'CLY': 1, 'TTN': 2},
             },
             'times': {
                'slot': {
@@ -351,6 +354,7 @@ def test_current_match():
             'scores': {
                'game': {'QMC': 3, 'GRS': 5},
                'league': {'QMC': 6, 'GRS': 8},
+               'ranking': {'QMC': 2, 'GRS': 1},
             },
             'times': {
                'slot': {

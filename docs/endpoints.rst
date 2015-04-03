@@ -195,6 +195,12 @@ limits start from the last match and work backwards.
                         "...": ...,
                         "...": ...,
                         "...": ...
+                    },
+                    "ranking": {
+                        "...": ...,
+                        "...": ...,
+                        "...": ...,
+                        "...": ...
                     }
                 },
                 "teams": [
