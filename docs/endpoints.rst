@@ -196,6 +196,12 @@ limits start from the last match and work backwards.
                         "...": ...,
                         "...": ...
                     },
+                    "normalised": {
+                        "...": ...,
+                        "...": ...,
+                        "...": ...,
+                        "...": ...
+                    },
                     "ranking": {
                         "...": ...,
                         "...": ...,
@@ -223,6 +229,13 @@ limits start from the last match and work backwards.
 
 ``last_scored`` contains the same value as in the following endpoint.
 Any dates are in ISO 8601 format.
+
+Only one of the ``league`` or ``normalised`` sub-keys of ``scores`` will be
+present, though they contain the same data. ``league`` will be present for
+league matches while ``normalised`` will be present for knockout matches.
+
+Notably, teams which are disqualified or no-show from a match will have a
+normalised (league) score of zero but will still have a position value.
 
 /matches/last_scored
 --------------------

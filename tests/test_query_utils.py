@@ -41,6 +41,7 @@ def test_knockout_match():
     info = get_scores(scores, build_match(num=1, arena='A'))
     expected = {
         "game": GAME_POINTS_DUMMY + "('A', 1)",
+        "normalised": RANKED_DUMMY + "('A', 1)",
         "ranking": { POSITIONS_DUMMY + "'A'": 1 },
     }
     assert expected == info

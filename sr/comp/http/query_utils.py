@@ -29,9 +29,11 @@ def get_scores(scores, match):
     if k in knockout.game_points:
         return {
             "game": knockout.game_points[k],
+            "normalised": knockout.ranked_points[k],
             "ranking": degroup(knockout.game_positions[k]),
         }
 
+    # TODO: consider using 'normalised' for both, instead of 'league' below
     league = scores.league
     if k in league.game_points:
         return {
