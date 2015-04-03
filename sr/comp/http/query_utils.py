@@ -31,6 +31,8 @@ def get_scores(scores, match):
             "league": league.ranked_points[k]
         }
 
+    return None
+
 
 def match_json_info(comp, match):
     """
