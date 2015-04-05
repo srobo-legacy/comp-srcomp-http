@@ -273,6 +273,7 @@ def test_periods():
     eq_(server_get('/periods'),
          {"periods": [
             {
+              "type": "league",
               "description": "Saturday, 26 April 2014, afternoon",
               "end_time": "Sat, 26 Apr 2014 16:30:00 GMT",
               "matches": {
@@ -283,6 +284,7 @@ def test_periods():
               "start_time": "Sat, 26 Apr 2014 12:00:00 GMT"
             },
             {
+              "type": "league",
               "description": "Sunday, 27 April 2014, morning",
               "end_time": "Sun, 27 Apr 2014 11:15:00 GMT",
               "matches": {
@@ -293,6 +295,7 @@ def test_periods():
               "start_time": "Sun, 27 Apr 2014 08:30:00 GMT"
             },
             {
+              "type": "league",
               "description": "Sunday, 27 April 2014, afternoon",
               "end_time": "Sun, 27 Apr 2014 14:10:00 GMT",
               "matches": {
@@ -303,6 +306,7 @@ def test_periods():
               "start_time": "Sun, 27 Apr 2014 12:15:00 GMT"
             },
             {
+              "type": "knockout",
               "description": "The Knockouts, Sunday, 27 April 2014, afternoon",
               "end_time": "Sun, 27 Apr 2014 16:30:00 GMT",
               "matches": {

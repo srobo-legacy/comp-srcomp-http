@@ -263,6 +263,7 @@ Knockouts might be another.
     {
         "periods": [
             {
+              "type": "...",
               "description": "A description of the period for humans",
               "end_time": "...",
               "matches": {
