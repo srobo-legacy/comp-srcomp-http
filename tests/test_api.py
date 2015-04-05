@@ -321,7 +321,7 @@ def test_periods():
 
 
 @freeze_time('2014-04-26 12:01:00', tz_offset=TZ_OFFSET)
-def test_current_match_time():
+def test_current_time():
     eq_(server_get('/current')['time'],
         '2014-04-26T13:01:00+01:00')
 
