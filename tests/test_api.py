@@ -277,7 +277,7 @@ def test_periods():
               "end_time": "Sat, 26 Apr 2014 16:30:00 GMT",
               "matches": {
                 "first_num": 0,
-                "last_num": 54
+                "last_num": 52,
               },
               "max_end_time": "Sat, 26 Apr 2014 16:40:00 GMT",
               "start_time": "Sat, 26 Apr 2014 12:00:00 GMT"
@@ -286,20 +286,20 @@ def test_periods():
               "description": "Sunday, 27 April 2014, morning",
               "end_time": "Sun, 27 Apr 2014 11:15:00 GMT",
               "matches": {
-                "first_num": 55,
-                "last_num": 88
+                "first_num": 53,
+                "last_num": 86,
               },
               "max_end_time": "Sun, 27 Apr 2014 11:20:00 GMT",
               "start_time": "Sun, 27 Apr 2014 08:30:00 GMT"
             },
             {
               "description": "Sunday, 27 April 2014, afternoon",
-              "end_time": "Sun, 27 Apr 2014 14:00:00 GMT",
+              "end_time": "Sun, 27 Apr 2014 14:10:00 GMT",
               "matches": {
-                "first_num": 89,
-                "last_num": 110
+                "first_num": 87,
+                "last_num": 110,
               },
-              "max_end_time": "Sun, 27 Apr 2014 14:00:00 GMT",
+              "max_end_time": "Sun, 27 Apr 2014 14:10:00 GMT",
               "start_time": "Sun, 27 Apr 2014 12:15:00 GMT"
             },
             {
