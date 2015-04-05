@@ -1,5 +1,7 @@
 """Various utils for working with HTTP."""
 
+from sr.comp.match_period import MatchType
+
 def get_scores(scores, match):
     """
     Get a scores object suitable for JSON output.
@@ -25,12 +27,20 @@ def get_scores(scores, match):
                 positions[tla] = pos
         return positions
 
-    knockout = scores.knockout
-    if k in knockout.game_points:
+    def get_scores_info(match):
+        if match.type == MatchType.knockout:
+            return scores.knockout
+        elif match.type == MatchType.tiebreaker:
+            return scores.tiebreaker
+        else:
+            return None
+
+    scores_info = get_scores_info(match)
+    if scores_info and k in scores_info.game_points:
         return {
-            "game": knockout.game_points[k],
-            "normalised": knockout.ranked_points[k],
-            "ranking": degroup(knockout.game_positions[k]),
+            "game": scores_info.game_points[k],
+            "normalised": scores_info.ranked_points[k],
+            "ranking": degroup(scores_info.game_positions[k]),
         }
 
     # TODO: consider using 'normalised' for both, instead of 'league' below

@@ -1,7 +1,7 @@
 import mock
 
 from sr.comp.http.query_utils import get_scores
-from sr.comp.match_period import Match
+from sr.comp.match_period import Match, MatchType
 
 GAME_POINTS_DUMMY = 'test game_points for: '
 POSITIONS_DUMMY = 'test positions for: '
@@ -19,6 +19,7 @@ def build_scores():
     scores = mock.Mock()
     scores.league = make_session_scores('A', 0)
     scores.knockout = make_session_scores('A', 1)
+    scores.tiebreaker = make_session_scores('A', 2)
     return scores
 
 def build_match(num, arena, teams = None, start_time = None, \
@@ -28,7 +29,7 @@ def build_match(num, arena, teams = None, start_time = None, \
 
 def test_league_match():
     scores = build_scores()
-    info = get_scores(scores, build_match(num=0, arena='A'))
+    info = get_scores(scores, build_match(num=0, arena='A', type_=MatchType.league))
     expected = {
         "game": GAME_POINTS_DUMMY + "('A', 0)",
         "league": RANKED_DUMMY + "('A', 0)",
@@ -38,11 +39,21 @@ def test_league_match():
 
 def test_knockout_match():
     scores = build_scores()
-    info = get_scores(scores, build_match(num=1, arena='A'))
+    info = get_scores(scores, build_match(num=1, arena='A', type_=MatchType.knockout))
     expected = {
         "game": GAME_POINTS_DUMMY + "('A', 1)",
         "normalised": RANKED_DUMMY + "('A', 1)",
         "ranking": { POSITIONS_DUMMY + "'A'": 1 },
+    }
+    assert expected == info
+
+def test_tiebreaker_match():
+    scores = build_scores()
+    info = get_scores(scores, build_match(num=2, arena='A', type_=MatchType.tiebreaker))
+    expected = {
+        "game": GAME_POINTS_DUMMY + "('A', 2)",
+        "normalised": RANKED_DUMMY + "('A', 2)",
+        "ranking": { POSITIONS_DUMMY + "'A'": 2 },
     }
     assert expected == info
 
