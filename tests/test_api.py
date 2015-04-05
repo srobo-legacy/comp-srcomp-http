@@ -325,6 +325,10 @@ def test_current_time():
     eq_(server_get('/current')['time'],
         '2014-04-26T13:01:00+01:00')
 
+@freeze_time('2014-04-26 12:30:00', tz_offset=TZ_OFFSET)
+def test_current_delay():
+    eq_(server_get('/current')['delay'], 15)
+
 
 @freeze_time('2014-04-26 12:01:00', tz_offset=TZ_OFFSET)
 def test_current_match():

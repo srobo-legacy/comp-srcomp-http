@@ -120,9 +120,14 @@ the current time.
 .. code-block:: json
 
     {
+        "delay": "...",
         "matches": "...",
         "time": "..."
     }
+
+The ``delay`` value is the amount of delay in seconds currently active.
+Note that this value is only useful during match periods (it will otherwise
+be ``0``).
 
 The ``matches`` key is a list of the matches which are currently being
 played, as measured by the current time falling between the start and end

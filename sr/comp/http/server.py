@@ -271,10 +271,14 @@ def current_state():
     comp = g.comp_man.get_comp()
 
     time = datetime.datetime.now(comp.timezone)
+
+    delay = comp.schedule.delay_at(time)
+    delay_seconds = int(delay.total_seconds())
+
     matches = list(map(partial(match_json_info, comp),
                        comp.schedule.matches_at(time)))
 
-    return jsonify(time=time.isoformat(), matches=matches)
+    return jsonify(delay=delay_seconds, time=time.isoformat(), matches=matches)
 
 
 @app.route('/knockout')
