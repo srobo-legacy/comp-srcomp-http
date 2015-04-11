@@ -147,7 +147,6 @@ def test_arenas():
                  'display_name': 'A'},
            'B': {'get': '/arenas/B',
                  'name': 'B',
-                 'colour': '#00ff00',
                  'display_name': 'B'}})
 
 

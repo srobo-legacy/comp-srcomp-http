@@ -50,6 +50,8 @@ def root():
 def format_arena(arena):
     data = {'get': url_for('get_arena', name=arena.name)}
     data.update(arena._asdict())
+    if not arena.colour:
+        del data['colour']
     return data
 
 
