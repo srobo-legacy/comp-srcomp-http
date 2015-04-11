@@ -43,8 +43,12 @@ Get information about an arena.
     {
         "name": "...",
         "display_name": "...",
+        "colour": "...",
         "get": "..."
     }
+
+If present, the ``colour`` key contains the colour of the arena in HTML
+hash format (eg: ``#00ff00``).
 
 /teams
 ------
