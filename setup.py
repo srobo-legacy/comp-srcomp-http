@@ -24,7 +24,7 @@ setup(
     ],
     setup_requires=[
         'nose >=1.3, <2',
-        'Sphinx >=1.2, <2',
+        'Sphinx >=1.3, <2',
     ],
     entry_points={
         'console_scripts': [
