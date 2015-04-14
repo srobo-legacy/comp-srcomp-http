@@ -1,7 +1,7 @@
 SR Comp HTTP
 ============
 
-|Build Status|
+|Build Status| |Docs Status|
 
 A HTTP interface around `SRComp <http://srobo.org/trac/wiki/SRComp>`__,
 the fifth round of `Student Robotics <http://srobo.org>`__ competition
@@ -46,3 +46,6 @@ Don't forget to also check the requirements for SRComp!
 
 .. |Build Status| image:: https://travis-ci.org/PeterJCLaw/srcomp-http.png?branch=master
    :target: https://travis-ci.org/PeterJCLaw/srcomp-http
+
+.. |Docs Status| image:: https://readthedocs.org/projects/srcomp-http/badge/?version=latest
+   :target: http://srcomp-http.readthedocs.org/
