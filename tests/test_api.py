@@ -676,7 +676,8 @@ def test_knockouts():
 
             print(match, actual_match)
 
-            assert match == actual_match, "Round: {0}, match: {1}".format(r_num, m_num)
+            assert match == actual_match, \
+                "Round: {}, Match: {} (#{})".format(r_num, m_num, match['num'])
 
     # Just in case the above is faulty
     eq_(actual_rounds, ref)
