@@ -72,6 +72,7 @@ def match_json_info(comp, match):
         A :class:`dict` containing JSON suitable output.
     """
     match_slot_lengths = comp.schedule.match_slot_lengths
+    staging_deadline = comp.schedule.staging_deadline
 
     info = {
         "num": match.num,
@@ -90,6 +91,10 @@ def match_json_info(comp, match):
                 "end": (match.start_time +
                         match_slot_lengths['pre'] +
                         match_slot_lengths['match']).isoformat()
+            },
+            'staging': {
+                'start': (match.start_time - staging_deadline * 2).isoformat(),
+                'end': (match.start_time - staging_deadline).isoformat()
             }
         }
     }
