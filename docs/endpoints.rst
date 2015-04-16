@@ -249,6 +249,10 @@ limits start from the last match and work backwards.
                     "slot": {
                         "end": "...",
                         "start": "..."
+                    },
+                    "staging": {
+                        "end": "...",
+                        "start": "..."
                     }
                 },
                 "type": "..."
@@ -265,6 +269,10 @@ league matches while ``normalised`` will be present for knockout matches.
 
 Notably, teams which are disqualified or no-show from a match will have a
 normalised (league) score of zero but will still have a position value.
+
+The staging deadline is available in ``times.staging.end`` while the
+``times.staging.start`` value is when shepherds should start looking for teams
+although this isn't a strict value.
 
 /matches/last_scored
 --------------------
