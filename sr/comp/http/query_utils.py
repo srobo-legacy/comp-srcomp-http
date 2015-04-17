@@ -29,18 +29,21 @@ def get_scores(scores, match):
 
     def get_scores_info(match):
         if match.type == MatchType.knockout:
-            return scores.knockout
+            return scores.knockout, \
+                    scores.knockout.resolved_positions.__getitem__
         elif match.type == MatchType.tiebreaker:
-            return scores.tiebreaker
+            scores_info = scores.tiebreaker
+            return scores_info, \
+                lambda k: degroup(scores_info.game_positions[k])
         else:
-            return None
+            return None, None
 
-    scores_info = get_scores_info(match)
+    scores_info, ranking = get_scores_info(match)
     if scores_info and k in scores_info.game_points:
         return {
             "game": scores_info.game_points[k],
             "normalised": scores_info.ranked_points[k],
-            "ranking": degroup(scores_info.game_positions[k]),
+            "ranking": ranking(k),
         }
 
     # TODO: consider using 'normalised' for both, instead of 'league' below
