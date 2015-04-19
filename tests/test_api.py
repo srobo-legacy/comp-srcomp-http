@@ -114,6 +114,7 @@ def test_corner():
                                    'number': 0,
                                    'colour': '#00ff00'})
 
+
 @raises_api_error('NotFound', 404)
 def test_invalid_corner():
     server_get('/corners/12')
@@ -763,3 +764,8 @@ def test_knockouts():
 
     # Just in case the above is faulty
     eq_(actual_rounds, ref)
+
+
+@raises_api_error('NotFound', 404)
+def test_tiebreaker():
+    server_get('/tiebreaker')

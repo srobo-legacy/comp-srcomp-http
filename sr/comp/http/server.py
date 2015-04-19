@@ -289,6 +289,15 @@ def knockout():
     return jsonify(rounds=comp.schedule.knockout_rounds)
 
 
+@app.route('/tiebreaker')
+def tiebreaker():
+    comp = g.comp_man.get_comp()
+    try:
+        return jsonify(tiebreaker=comp.schedule.tiebreaker)
+    except AttributeError:
+        abort(404)
+
+
 def error_handler(e):
     # fill up the error object with a name, description, code and details
     error = {

@@ -322,3 +322,15 @@ matches in this period.
 Get a list of rounds which make up the knockouts. Each round is expressed
 as a list of matches which make up that round. Matches are expressed using
 the same format as the `/matches`_ endpoint.
+
+/tiebreaker
+-----------
+
+Get the tiebreaker match, or raise a 404 error if one does not exist. The match
+is expressed in the same format as the `/matches`_ endpoint.
+
+.. code-block:: json
+
+    {
+        "tiebreaker": ...
+    }
