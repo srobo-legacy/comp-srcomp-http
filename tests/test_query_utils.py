@@ -7,6 +7,7 @@ from sr.comp.match_period import Match, MatchType
 GAME_POINTS_DUMMY = 'test game_points for: '
 POSITIONS_DUMMY = 'test positions for: '
 RANKED_DUMMY = 'test ranked for: '
+RESOLVED_DUMMY = 'test resolved for: '
 
 
 def make_session_scores(arena, num):
@@ -15,7 +16,7 @@ def make_session_scores(arena, num):
     scores.game_points = {key: GAME_POINTS_DUMMY + str(key)}
     scores.game_positions = {key: {num: [POSITIONS_DUMMY + repr(arena)]}}
     scores.ranked_points = {key: RANKED_DUMMY + str(key)}
-    scores.resolved_positions = {key: {POSITIONS_DUMMY + repr(arena): num}}
+    scores.resolved_positions = {key: {RESOLVED_DUMMY + repr(arena): num}}
     return scores
 
 
@@ -28,9 +29,9 @@ def build_scores():
 
 
 def build_match(num, arena, teams=None, start_time=None, end_time=None,
-                type_=None):
+                type_=None, use_resolved_ranking=False):
     return Match(num, 'Match {n}'.format(n=num), arena, teams, start_time,
-                 end_time, type_)
+                 end_time, type_, use_resolved_ranking)
 
 
 def test_league_match():
@@ -48,7 +49,21 @@ def test_league_match():
 def test_knockout_match():
     scores = build_scores()
     info = get_scores(scores, build_match(num=1, arena='A',
-                                          type_=MatchType.knockout))
+                                          type_=MatchType.knockout,
+                                          use_resolved_ranking=True))
+    expected = {
+        "game": GAME_POINTS_DUMMY + "('A', 1)",
+        "normalised": RANKED_DUMMY + "('A', 1)",
+        "ranking": { RESOLVED_DUMMY + "'A'": 1 },
+    }
+    assert expected == info
+
+
+def test_finals_match():
+    scores = build_scores()
+    info = get_scores(scores, build_match(num=1, arena='A',
+                                          type_=MatchType.knockout,
+                                          use_resolved_ranking=False))
     expected = {
         "game": GAME_POINTS_DUMMY + "('A', 1)",
         "normalised": RANKED_DUMMY + "('A', 1)",
