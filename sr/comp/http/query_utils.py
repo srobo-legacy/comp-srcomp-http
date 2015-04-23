@@ -81,7 +81,7 @@ def match_json_info(comp, match):
         A :class:`dict` containing JSON suitable output.
     """
     match_slot_lengths = comp.schedule.match_slot_lengths
-    staging_deadline = comp.schedule.staging_deadline
+    staging_times = comp.schedule.get_staging_times(match)
 
     info = {
         "num": match.num,
@@ -102,9 +102,15 @@ def match_json_info(comp, match):
                         match_slot_lengths['match']).isoformat()
             },
             'staging': {
-                'start': (match.start_time - staging_deadline * 2).isoformat(),
-                'end': (match.start_time - staging_deadline).isoformat()
-            }
+                # Compatibilty for the existing shepherds page
+                'start': staging_times['signal_shepherds'].isoformat(),
+                'end': staging_times['closes'].isoformat(),
+                # Main keys
+                'opens': staging_times['opens'].isoformat(),
+                'closes': staging_times['closes'].isoformat(),
+                'signal_teams': staging_times['signal_teams'].isoformat(),
+                'signal_shepherds': staging_times['signal_shepherds'].isoformat(),
+            },
         }
     }
 

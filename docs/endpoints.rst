@@ -252,7 +252,11 @@ limits start from the last match and work backwards.
                     },
                     "staging": {
                         "end": "...",
-                        "start": "..."
+                        "start": "...",
+                        "opens": "...",
+                        "closes": "...",
+                        "signal_teams": "...",
+                        "signal_shepherds": "..."
                     }
                 },
                 "type": "..."
