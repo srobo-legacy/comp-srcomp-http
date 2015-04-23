@@ -280,7 +280,15 @@ def current_state():
     matches = list(map(partial(match_json_info, comp),
                        comp.schedule.matches_at(time)))
 
-    return jsonify(delay=delay_seconds, time=time.isoformat(), matches=matches)
+    staging_matches = []
+    for slot in comp.schedule.matches:
+        for match in slot.values():
+            staging_times = comp.schedule.get_staging_times(match)
+            if staging_times['opens'] <= time <= staging_times['closes']:
+                staging_matches.append(match_json_info(comp, match))
+
+    return jsonify(delay=delay_seconds, time=time.isoformat(),
+                   matches=matches, staging_matches=staging_matches)
 
 
 @app.route('/knockout')
