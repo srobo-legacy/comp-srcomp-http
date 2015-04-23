@@ -102,10 +102,6 @@ def match_json_info(comp, match):
                         match_slot_lengths['match']).isoformat()
             },
             'staging': {
-                # Compatibilty for the existing shepherds page
-                'start': staging_times['signal_shepherds'].isoformat(),
-                'end': staging_times['closes'].isoformat(),
-                # Main keys
                 'opens': staging_times['opens'].isoformat(),
                 'closes': staging_times['closes'].isoformat(),
                 'signal_teams': staging_times['signal_teams'].isoformat(),
