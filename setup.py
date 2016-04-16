@@ -6,7 +6,7 @@ with open('README.rst') as f:
 
 setup(
     name='sr.comp.http',
-    version='1.0.0',
+    version='1.1.0',
     packages=find_packages(),
     namespace_packages=['sr', 'sr.comp'],
     package_data={'sr.comp.http': ['logging-*.ini']},
@@ -15,7 +15,7 @@ setup(
     author_email="srobo-devel@googlegroups.com",
     install_requires=[
         'PyYAML >=3.11, <4',
-        'sr.comp >=1.0, <2',
+        'sr.comp >=1.1, <2',
         'mock >=1.0.1, <2',
         'six >=1.8, <2',
         'Flask >=0.10, <0.11',

@@ -41,6 +41,7 @@ def root():
                    corners=url_for('corners'),
                    config=url_for('config'),
                    state=url_for('state'),
+                   locations=url_for('locations'),
                    matches=url_for('matches'),
                    periods=url_for('match_periods'),
                    current=url_for('current_state'),
@@ -72,13 +73,44 @@ def get_arena(name):
     return jsonify(**format_arena(comp.arenas[name]))
 
 
+def format_location(location):
+    data = {'get': url_for('get_location', name=location['name'])}
+    data.update(location)
+    del data['name']
+    return data
+
+
+@app.route('/locations')
+def locations():
+    comp = g.comp_man.get_comp()
+
+    return jsonify(locations={name: format_location(location)
+                              for name, location in comp.venue.locations.items()})
+
+@app.route('/locations/<name>')
+def get_location(name):
+    comp = g.comp_man.get_comp()
+
+    try:
+        location = comp.venue.locations[name]
+    except KeyError:
+        abort(404)
+
+    return jsonify(format_location(location))
+
+
 def team_info(comp, team):
     scores = comp.scores.league.teams[team.tla]
     league_pos = comp.scores.league.positions[team.tla]
+    location = comp.venue.get_team_location(team.tla)
     info = {'name': team.name,
             'get': url_for('get_team', tla=team.tla),
             'tla': team.tla,
             'league_pos': league_pos,
+            'location': {
+                'name': location,
+                'get': url_for('get_location', name=location),
+            },
             'scores': {'league': scores.league_points,
                        'game': scores.game_points}}
 

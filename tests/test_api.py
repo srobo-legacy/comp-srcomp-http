@@ -76,6 +76,8 @@ def test_endpoints():
         '/corners/1',
         '/corners/2',
         '/corners/3',
+        '/locations',
+        '/locations/a-group',
         '/matches',
         '/matches?arena=A',
         '/matches?arena=B',
@@ -96,6 +98,7 @@ def test_root():
                           'arenas': '/arenas',
                           'teams': '/teams',
                           'corners': '/corners',
+                          'locations': '/locations',
                           'matches': '/matches',
                           'periods': '/periods',
                           'state': '/state',
@@ -151,10 +154,53 @@ def test_arenas():
                  'display_name': 'B'}})
 
 
+def test_location():
+    eq_(server_get('/locations/a-group'),
+        {"description": "A group of some sort, it contains a number of teams.",
+         "display_name": "A group",
+         "get": "/locations/a-group",
+         "shepherds": {"colour": "#A9A9F5",
+                       "name": "Blue"},
+         "teams": ["BAY", "BDF", "BGS", "BPV", "BRK", "BRN", "BWS", "CCR", \
+                   "CGS", "CLF", "CLY", "CPR", "CRB", "DSF", "EMM", "GRD", \
+                   "GRS", "GYG", "HRS", "HSO", "HYP", "HZW", "ICE", "JMS", \
+                   "KDE", "KES", "KHS", "LFG"]})
+
+
+@raises_api_error('NotFound', 404)
+def test_invalid_location():
+    server_get('/locations/nope')
+
+
+def test_locations():
+    a = {"description": "A group of some sort, it contains a number of teams.",
+         "display_name": "A group",
+         "get": "/locations/a-group",
+         "shepherds": {"colour": "#A9A9F5",
+                       "name": "Blue"},
+         "teams": ["BAY", "BDF", "BGS", "BPV", "BRK", "BRN", "BWS", "CCR", \
+                   "CGS", "CLF", "CLY", "CPR", "CRB", "DSF", "EMM", "GRD", \
+                   "GRS", "GYG", "HRS", "HSO", "HYP", "HZW", "ICE", "JMS", \
+                   "KDE", "KES", "KHS", "LFG"]}
+    b = {"display_name": "Another group",
+         "get": "/locations/b-group",
+         "shepherds": {"colour": "green",
+                       "name": "Green"},
+         "teams": ["LSS", "MAI", "MAI2", "MEA", "MFG", "NHS", "PAG", "PAS", \
+                   "PSC", "QEH", "QMC", "QMS", "RED", "RGS", "RUN", "RWD", \
+                   "SCC", "SEN", "SGS", "STA", "SWI", "TBG", "TTN", "TWG", \
+                   "WYC"]}
+
+    eq_(server_get('/locations')['locations'], {'a-group': a,
+                                                'b-group': b})
+
+
 def test_team():
     eq_(server_get('/teams/CLF'), {'tla': 'CLF',
                                    'name': 'Clifton High School',
                                    'league_pos': 36,
+                                   'location': {'get': '/locations/a-group',
+                                                'name': 'a-group'},
                                    'scores': {'league': 68,
                                               'game': 69},
                                    'get': '/teams/CLF'})

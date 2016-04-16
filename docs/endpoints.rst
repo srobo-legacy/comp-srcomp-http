@@ -77,6 +77,10 @@ Get information about a team.
         "get": "...",
         "tla": "...",
         "league_pos": "...",
+        "location": {
+          "get": "...",
+          "name": "..."
+        },
         "scores": {
             "league": "...",
             "knockout": "..."
@@ -165,6 +169,42 @@ Get general information about the configuration of the competition and the host.
             "match": "...",
             "post": "...",
             "total": "..."
+        }
+    }
+
+/locations
+----------
+
+Get information about the locations within the venue.
+
+.. code-block:: json
+
+    {
+        "locations": {
+            "..." : "..."
+        }
+    }
+
+The location objects returned are in the same format as those described below.
+
+/locations/``name``
+-------------------
+
+Get information about a named location within the venue.
+
+.. code-block:: json
+
+    {
+        "locations": {
+            "..." : {
+                "display_name": "...",
+                "get": "...",
+                "teams": [ "..." ],
+                "shepherds": {
+                    "name": "...",
+                    "colour": "..."
+                }
+            }
         }
     }
 
