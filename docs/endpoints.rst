@@ -76,6 +76,7 @@ Get information about a team.
         "name": "...",
         "get": "...",
         "tla": "...",
+        "league_pos": "...",
         "scores": {
             "league": "...",
             "knockout": "..."
