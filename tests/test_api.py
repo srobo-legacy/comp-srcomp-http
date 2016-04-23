@@ -324,6 +324,11 @@ def test_invalid_match_filter():
     server_get('/matches?number=0&arena=A')
 
 
+@raises_api_error('BadRequest', 400)
+def test_invalid_match_filter_value():
+    server_get('/matches?num=&arena=A')
+
+
 def test_last_scored():
     eq_(server_get('/matches/last_scored'), {'last_scored': 99})
 

@@ -227,14 +227,8 @@ def matches():
         else:
             return dateutil.parser.parse(string)
 
-    def parse_match_type(string):
-        try:
-            return MatchType(string)
-        except ValueError:
-            raise errors.BadRequest()
-
     filters = [
-        ('type', parse_match_type, lambda x: x['type']),
+        ('type', MatchType, lambda x: x['type']),
         ('arena', str, lambda x: x['arena']),
         ('num', int, lambda x: x['num']),
         ('game_start_time', parse_date, lambda x: x['times']['game']['start']),
@@ -252,10 +246,13 @@ def matches():
     # actually run the filters
     for filter_key, filter_type, filter_value in filters:
         if filter_key in request.args:
-            predicate = parse_difference_string(request.args[filter_key],
-                                                filter_type)
-            matches = [match for match in matches
-                       if predicate(filter_type(filter_value(match)))]
+            value = request.args[filter_key]
+            try:
+                predicate = parse_difference_string(value, filter_type)
+                matches = [match for match in matches
+                           if predicate(filter_type(filter_value(match)))]
+            except ValueError:
+                raise errors.BadRequest("Bad value '{0}' for '{1}'.".format(value, filter_key))
 
     # limit the results
     try:
