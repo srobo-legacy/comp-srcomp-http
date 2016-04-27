@@ -132,6 +132,7 @@ the current time.
         "delay": "...",
         "matches": "...",
         "staging_matches": "...",
+        "shepherding_matches": "...",
         "time": "..."
     }
 
@@ -148,6 +149,11 @@ The ``staging_matches`` key is a list of the matches which are currently
 being staged, as measured by the current time falling between the open and
 close values of their staging times. They are presented in the same format
 as the `/matches`_ endpoint uses.
+
+The ``shepherding_matches`` key is a list of the matches which are currently
+being staged, as measured by the current time falling between the earliest
+shepherding signal value and time when staging closes. They are presented
+in the same format as the `/matches`_ endpoint uses.
 
 The ``time`` key is the current time on the server.
 

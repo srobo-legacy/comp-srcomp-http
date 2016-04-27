@@ -408,11 +408,7 @@ def test_current_delay():
     eq_(server_get('/current')['delay'], 15)
 
 
-@freeze_time('2014-04-26 12:01:00', tz_offset=TZ_OFFSET)
-def test_current_match():
-    match_list = server_get('/current')['matches']
-    match_list.sort(key=lambda match: match['arena'])
-    ref = [{'num': 0,
+MATCH_0 = [{'num': 0,
             'display_name': 'Match 0',
             'arena': 'A',
             'type': 'league',
@@ -470,7 +466,36 @@ def test_current_match():
                   }
                },
             }}]
-    eq_(match_list, ref)
+
+@freeze_time('2014-04-26 11:55:00', tz_offset=TZ_OFFSET)
+def test_current_shepherding_match_none():
+    match_list = server_get('/current')['shepherding_matches']
+    match_list.sort(key=lambda match: match['arena'])
+    eq_(match_list, [])
+
+@freeze_time('2014-04-26 11:58:00', tz_offset=TZ_OFFSET)
+def test_current_shepherding_match():
+    match_list = server_get('/current')['shepherding_matches']
+    match_list.sort(key=lambda match: match['arena'])
+    eq_(match_list, MATCH_0)
+
+@freeze_time('2014-04-26 11:55:00', tz_offset=TZ_OFFSET)
+def test_current_staging_match_none():
+    match_list = server_get('/current')['staging_matches']
+    match_list.sort(key=lambda match: match['arena'])
+    eq_(match_list, [])
+
+@freeze_time('2014-04-26 11:57:00', tz_offset=TZ_OFFSET)
+def test_current_staging_match():
+    match_list = server_get('/current')['staging_matches']
+    match_list.sort(key=lambda match: match['arena'])
+    eq_(match_list, MATCH_0)
+
+@freeze_time('2014-04-26 12:01:00', tz_offset=TZ_OFFSET)
+def test_current_match():
+    match_list = server_get('/current')['matches']
+    match_list.sort(key=lambda match: match['arena'])
+    eq_(match_list, MATCH_0)
 
 
 def test_knockouts():

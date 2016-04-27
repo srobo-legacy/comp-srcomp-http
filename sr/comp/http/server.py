@@ -310,14 +310,25 @@ def current_state():
                        comp.schedule.matches_at(time)))
 
     staging_matches = []
+    shepherding_matches = []
     for slot in comp.schedule.matches:
         for match in slot.values():
             staging_times = comp.schedule.get_staging_times(match)
-            if staging_times['opens'] <= time <= staging_times['closes']:
+
+            if time > staging_times['closes']:
+                # Already done staging
+                continue
+
+            if staging_times['opens'] <= time:
                 staging_matches.append(match_json_info(comp, match))
 
+            first_signal = min(staging_times['signal_shepherds'].values())
+            if first_signal <= time:
+                shepherding_matches.append(match_json_info(comp, match))
+
     return jsonify(delay=delay_seconds, time=time.isoformat(),
-                   matches=matches, staging_matches=staging_matches)
+                   matches=matches, staging_matches=staging_matches,
+                   shepherding_matches=shepherding_matches)
 
 
 @app.route('/knockout')
