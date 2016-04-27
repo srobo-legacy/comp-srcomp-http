@@ -297,7 +297,9 @@ limits start from the last match and work backwards.
                         "opens": "...",
                         "closes": "...",
                         "signal_teams": "...",
-                        "signal_shepherds": "..."
+                        "signal_shepherds": {
+                            "...": "...",
+                        }
                     }
                 },
                 "type": "..."

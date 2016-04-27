@@ -105,7 +105,10 @@ def match_json_info(comp, match):
                 'opens': staging_times['opens'].isoformat(),
                 'closes': staging_times['closes'].isoformat(),
                 'signal_teams': staging_times['signal_teams'].isoformat(),
-                'signal_shepherds': staging_times['signal_shepherds'].isoformat(),
+                'signal_shepherds': {
+                    area: time.isoformat() \
+                     for area, time in staging_times['signal_shepherds'].items()
+                },
             },
         }
     }
