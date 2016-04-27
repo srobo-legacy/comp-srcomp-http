@@ -131,6 +131,7 @@ the current time.
     {
         "delay": "...",
         "matches": "...",
+        "staging_matches": "...",
         "time": "..."
     }
 
@@ -142,6 +143,11 @@ The ``matches`` key is a list of the matches which are currently being
 played, as measured by the current time falling between the start and end
 of their slot. They are presented in the same format as the `/matches`_
 endpoint uses.
+
+The ``staging_matches`` key is a list of the matches which are currently
+being staged, as measured by the current time falling between the open and
+close values of their staging times. They are presented in the same format
+as the `/matches`_ endpoint uses.
 
 The ``time`` key is the current time on the server.
 
