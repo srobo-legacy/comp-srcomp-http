@@ -1,3 +1,3 @@
 [submodule "tests/dummy"]
 	path = tests/dummy
-	url = git://studentrobotics.org/comp/dummy-comp.git
+	url = git://git.studentrobotics.org/comp/dummy-comp.git
