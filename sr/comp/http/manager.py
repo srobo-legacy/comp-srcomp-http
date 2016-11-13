@@ -78,7 +78,7 @@ class SRCompManager(object):
     def _load(self):
         lock_path = update_lock_path(self.root_dir)
         with share_lock(lock_path):
-            "grab a lock & reload"
+            # Grab a lock & reload
             logging.info("Loading compstate from %s", self.root_dir)
             self.comp = SRComp(self.root_dir)
             self.update_time = time.time()
