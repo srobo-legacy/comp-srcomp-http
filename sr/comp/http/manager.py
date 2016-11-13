@@ -75,12 +75,15 @@ class SRCompManager(object):
         self._update_pls_time = None
         """The time the update pls file was last modified."""
 
+        self._comp = None
+        """Cached SRComp instance."""
+
     def _load(self):
         lock_path = update_lock_path(self.root_dir)
         with share_lock(lock_path):
             # Grab a lock & reload
             logging.info("Loading compstate from %s", self.root_dir)
-            self.comp = SRComp(self.root_dir)
+            self._comp = SRComp(self.root_dir)
             self.update_time = time.time()
 
     def _state_changed(self):
@@ -106,4 +109,4 @@ class SRCompManager(object):
             # data is more than 5 seconds old and the state has changed, reload
             self._load()
 
-        return self.comp
+        return self._comp
