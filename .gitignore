@@ -5,3 +5,6 @@
 build
 dist
 sr.comp.http.egg-info
+
+# VSCode
+/.vscode
